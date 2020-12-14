@@ -5,7 +5,7 @@ HANDLE _CreateEvent(BOOL bManualReset, BOOL bInitialState, LPCTSTR lpName)
 {
 	SECURITY_DESCRIPTOR sd;
 	SECURITY_ATTRIBUTES sa;
-	 
+
 	memset(&sd,0,sizeof(sd));
 	InitializeSecurityDescriptor(&sd,SECURITY_DESCRIPTOR_REVISION);
 	SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE);
@@ -20,7 +20,7 @@ HANDLE _CreateFile( LPCTSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode
 {
 	SECURITY_DESCRIPTOR sd;
 	SECURITY_ATTRIBUTES sa;
-	 
+
 	memset(&sd,0,sizeof(sd));
 	InitializeSecurityDescriptor(&sd,SECURITY_DESCRIPTOR_REVISION);
 	SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE);
@@ -35,7 +35,7 @@ HANDLE _CreateMutex( BOOL bInitialOwner, LPCTSTR lpName )
 {
 	SECURITY_DESCRIPTOR sd;
 	SECURITY_ATTRIBUTES sa;
-	 
+
 	memset(&sd,0,sizeof(sd));
 	InitializeSecurityDescriptor(&sd,SECURITY_DESCRIPTOR_REVISION);
 	SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE);
@@ -50,7 +50,7 @@ HANDLE _CreateFileMapping( HANDLE hFile, DWORD flProtect, DWORD dwMaximumSizeHig
 {
 	SECURITY_DESCRIPTOR sd;
 	SECURITY_ATTRIBUTES sa;
-	 
+
 	memset(&sd,0,sizeof(sd));
 	InitializeSecurityDescriptor(&sd,SECURITY_DESCRIPTOR_REVISION);
 	SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE);
@@ -65,7 +65,7 @@ HANDLE _CreateNamedPipe( LPCTSTR lpName, DWORD dwOpenMode, DWORD dwPipeMode, DWO
 {
 	SECURITY_DESCRIPTOR sd;
 	SECURITY_ATTRIBUTES sa;
-	 
+
 	memset(&sd,0,sizeof(sd));
 	InitializeSecurityDescriptor(&sd,SECURITY_DESCRIPTOR_REVISION);
 	SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE);
@@ -83,7 +83,7 @@ BOOL _CreateDirectory( LPCTSTR lpPathName )
 		TCHAR szCreatePath[MAX_PATH+1] = _T("");
 		szCreatePath[0] = lpPathName[0];
 		szCreatePath[1] = lpPathName[1];
-		
+
 		for (int i = 2; i < (int)_tcslen(lpPathName); i++) {
 			szCreatePath[i] = lpPathName[i];
 			if (szCreatePath[i] == '\\') {
@@ -119,4 +119,22 @@ HANDLE _CreateFile2( LPCTSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMod
 		}
 	}
 	return hFile;
+}
+
+void _OutputDebugString(const TCHAR *format, ...)
+{
+	va_list params;
+
+	va_start(params, format);
+	int iResult;
+	TCHAR *buff;
+	int length = _vsctprintf(format, params);
+	buff = new TCHAR [length + 1];
+	if (buff != NULL) {
+		iResult = _vstprintf_s(buff, length + 1, format, params);
+		buff[length] = _T('\0');
+		OutputDebugString(buff);
+		delete[] buff;
+	}
+	va_end(params);
 }

@@ -33,5 +33,5 @@ HANDLE _CreateNamedPipe( LPCTSTR lpName, DWORD dwOpenMode, DWORD dwPipeMode, DWO
 BOOL _CreateDirectory( LPCTSTR lpPathName );
 HANDLE _CreateFile2( LPCTSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile );
 
-
+void _OutputDebugString(const TCHAR *pOutputString, ...);
 #endif
