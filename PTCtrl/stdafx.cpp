@@ -1,9 +1,9 @@
-// stdafx.cpp : 標準インクルード PT1Ctrl.pch のみを
-// 含むソース ファイルは、プリコンパイル済みヘッダーになります。
-// stdafx.obj にはプリコンパイル済み型情報が含まれます。
+// stdafx.cpp : �W���C���N���[�h PT1Ctrl.pch �݂̂�
+// �܂ރ\�[�X �t�@�C���́A�v���R���p�C���ς݃w�b�_�[�ɂȂ�܂��B
+// stdafx.obj �ɂ̓v���R���p�C���ς݌^��񂪊܂܂�܂��B
 
 #include "stdafx.h"
 
-// TODO: このファイルではなく、STDAFX.H で必要な
-// 追加ヘッダーを参照してください。
+// TODO: ���̃t�@�C���ł͂Ȃ��ASTDAFX.H �ŕK�v��
+// �ǉ��w�b�_�[���Q�Ƃ��Ă��������B
 HANDLE g_hStartEnableEvent;

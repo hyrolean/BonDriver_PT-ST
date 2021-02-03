@@ -14,64 +14,64 @@ namespace PT {
 	class Device2;
 
 	// +------------+
-	// | バスクラス |
+	// | �o�X�N���X |
 	// +------------+
-	// バス上のデバイスを列挙します。またデバイスインスタンスを生成します。
+	// �o�X��̃f�o�C�X��񋓂��܂��B�܂��f�o�C�X�C���X�^���X�𐶐����܂��B
 	class Bus {
 	public:
-		// [機能] Bus インスタンスを生成
-		// [説明] ドライバ名 は "windrvr6_EARTHSOFT_PT2", "windrvr6_EARTHSOFT_PT1" の順に試行します。
-		// [返値] STATUS_INVALID_PARAM_ERROR → 引数 bus が NULL
-		//        STATUS_WDAPI_LOAD_ERROR    → LoadLibrary(TEXT("wdapi1002.dll")) の返値が NULL
-		//        STATUS_WD_DriverName_ERROR → WD_DriverName() の返値が NULL
-		//        STATUS_WD_Open_ERROR       → WD_Open() でエラーが発生
-		//        STATUS_WD_Version_ERROR    → WD_Version() でエラーが発生。またはバージョンが 10.0.2 でない
-		//        STATUS_WD_License_ERROR    → WD_License() でエラーが発生
+		// [�@�\] Bus �C���X�^���X�𐶐�
+		// [����] �h���C�o�� �� "windrvr6_EARTHSOFT_PT2", "windrvr6_EARTHSOFT_PT1" �̏��Ɏ��s���܂��B
+		// [�Ԓl] STATUS_INVALID_PARAM_ERROR �� ���� bus �� NULL
+		//        STATUS_WDAPI_LOAD_ERROR    �� LoadLibrary(TEXT("wdapi1002.dll")) �̕Ԓl�� NULL
+		//        STATUS_WD_DriverName_ERROR �� WD_DriverName() �̕Ԓl�� NULL
+		//        STATUS_WD_Open_ERROR       �� WD_Open() �ŃG���[������
+		//        STATUS_WD_Version_ERROR    �� WD_Version() �ŃG���[�������B�܂��̓o�[�W������ 10.0.2 �łȂ�
+		//        STATUS_WD_License_ERROR    �� WD_License() �ŃG���[������
 		typedef status (*NewBusFunction)(Bus **bus);
 
-		// [機能] インスタンスを解放
-		// [説明] delete は使えません。この関数を呼び出してください。
-		// [返値] STATUS_ALL_DEVICES_MUST_BE_DELETED_ERROR → NewDevice() で生成されたデバイスが全て Delete() されていない
+		// [�@�\] �C���X�^���X�����
+		// [����] delete �͎g���܂���B���̊֐����Ăяo���Ă��������B
+		// [�Ԓl] STATUS_ALL_DEVICES_MUST_BE_DELETED_ERROR �� NewDevice() �Ő������ꂽ�f�o�C�X���S�� Delete() ����Ă��Ȃ�
 		virtual status Delete() = 0;
 
-		// [機能] ソフトウェアバージョンを取得
-		// [説明] バージョンが 2.0 の場合、値は 0x200 になります。
-		//        上位 24 ビットが同じであればバイナリ互換になるように努めますので、
-		//        ((version >> 8) == 2) であるかをチェックしてください。 
-		// [返値] STATUS_INVALID_PARAM_ERROR → 引数 version が NULL
+		// [�@�\] �\�t�g�E�F�A�o�[�W�������擾
+		// [����] �o�[�W������ 2.0 �̏ꍇ�A�l�� 0x200 �ɂȂ�܂��B
+		//        ��� 24 �r�b�g�������ł���΃o�C�i���݊��ɂȂ�悤�ɓw�߂܂��̂ŁA
+		//        ((version >> 8) == 2) �ł��邩���`�F�b�N���Ă��������B 
+		// [�Ԓl] STATUS_INVALID_PARAM_ERROR �� ���� version �� NULL
 		virtual status GetVersion(uint *version) const = 0;
 
-		// デバイス情報
+		// �f�o�C�X���
 		struct DeviceInfo {
-			uint Bus;			// PCI バス番号
-			uint Slot;			// PCI デバイス番号
-			uint Function;		// PCI ファンクション番号 (正常動作時は必ず 0 になります)
-			uint PTn;			// 品番 (PT1:1 PT2:2)
-			uint BadBitCount;	// PCI データバスのビット化け数
+			uint Bus;			// PCI �o�X�ԍ�
+			uint Slot;			// PCI �f�o�C�X�ԍ�
+			uint Function;		// PCI �t�@���N�V�����ԍ� (���퓮�쎞�͕K�� 0 �ɂȂ�܂�)
+			uint PTn;			// �i�� (PT1:1 PT2:2)
+			uint BadBitCount;	// PCI �f�[�^�o�X�̃r�b�g������
 		};
 
-		// [機能] 認識されているデバイスのリストを取得
-		// [説明] PCI バスをスキャンして以下の条件を全て満たすデバイスをリストアップします。
-		//        (PT1) ベンダID: 0x10ee / デバイスID: 0x211a / サブシステムベンダID: ~0x10ee / サブシステムID: ~0x211a
-		//        (PT2) ベンダID: 0x10ee / デバイスID: 0x222a / サブシステムベンダID: ~0x10ee / サブシステムID: ~0x222a
+		// [�@�\] �F������Ă���f�o�C�X�̃��X�g���擾
+		// [����] PCI �o�X���X�L�������Ĉȉ��̏�����S�Ė������f�o�C�X�����X�g�A�b�v���܂��B
+		//        (PT1) �x���_ID: 0x10ee / �f�o�C�XID: 0x211a / �T�u�V�X�e���x���_ID: ~0x10ee / �T�u�V�X�e��ID: ~0x211a
+		//        (PT2) �x���_ID: 0x10ee / �f�o�C�XID: 0x222a / �T�u�V�X�e���x���_ID: ~0x10ee / �T�u�V�X�e��ID: ~0x222a
 		//        
-		//        スロットとボード端子の接触が悪い場合、これらの ID にビット化けが生じることがあります。
-		//        このような状況でもデバイスを検出できるように、maxBadBitCount でビット化けの許容上限を指定することができます。
-		//        64ビット(16ビット×4) の各ビットを比較し、相違ビット数が maxBadBitCount 以下のデバイスをリストアップします。
+		//        �X���b�g�ƃ{�[�h�[�q�̐ڐG�������ꍇ�A������ ID �Ƀr�b�g�����������邱�Ƃ�����܂��B
+		//        ���̂悤�ȏ󋵂ł��f�o�C�X�����o�ł���悤�ɁAmaxBadBitCount �Ńr�b�g�����̋��e������w�肷�邱�Ƃ��ł��܂��B
+		//        64�r�b�g(16�r�b�g�~4) �̊e�r�b�g���r���A����r�b�g���� maxBadBitCount �ȉ��̃f�o�C�X�����X�g�A�b�v���܂��B
 		//        
-		//        deviceInfoCount は呼び出し前にデバイスの上限数を指定します。呼出し後は見つかったデバイス数を返します。
-		//        maxBadBitCount は 3 以下の値を指定します。
-		//        DeviceInfo::BadBitCount が 0 でないデバイスを Device::Open() することはできません。
-		// [返値] STATUS_INVALID_PARAM_ERROR   → 引数 deviceInfoPtr, deviceInfoCount のいずれかが NULL
-		//                                        または引数 maxBadBitCount が 3 より大きい
-		//        STATUS_WD_PciScanCards_ERROR → WD_PciScanCards でエラーが発生
+		//        deviceInfoCount �͌Ăяo���O�Ƀf�o�C�X�̏�������w�肵�܂��B�ďo����͌��������f�o�C�X����Ԃ��܂��B
+		//        maxBadBitCount �� 3 �ȉ��̒l���w�肵�܂��B
+		//        DeviceInfo::BadBitCount �� 0 �łȂ��f�o�C�X�� Device::Open() ���邱�Ƃ͂ł��܂���B
+		// [�Ԓl] STATUS_INVALID_PARAM_ERROR   �� ���� deviceInfoPtr, deviceInfoCount �̂����ꂩ�� NULL
+		//                                        �܂��͈��� maxBadBitCount �� 3 ���傫��
+		//        STATUS_WD_PciScanCards_ERROR �� WD_PciScanCards �ŃG���[������
 		virtual status Scan(DeviceInfo *deviceInfoPtr, uint *deviceInfoCount, uint maxBadBitCount = 0) = 0;
 
-		// [機能] デバイスインスタンスを生成する
-		// [説明] デバイスリソースの排他チェックはこの関数では行われません。Device::Open() で行われます。
-		//        Device2 は非公開インターフェースです。device2 は NULL にしてください。
-		// [返値] STATUS_INVALID_PARAM_ERROR → 引数 deviceInfoPtr, device のいずれかが NULL
-		//                                      または引数 device2 が NULL でない
+		// [�@�\] �f�o�C�X�C���X�^���X�𐶐�����
+		// [����] �f�o�C�X���\�[�X�̔r���`�F�b�N�͂��̊֐��ł͍s���܂���BDevice::Open() �ōs���܂��B
+		//        Device2 �͔���J�C���^�[�t�F�[�X�ł��Bdevice2 �� NULL �ɂ��Ă��������B
+		// [�Ԓl] STATUS_INVALID_PARAM_ERROR �� ���� deviceInfoPtr, device �̂����ꂩ�� NULL
+		//                                      �܂��͈��� device2 �� NULL �łȂ�
 		virtual status NewDevice(const DeviceInfo *deviceInfoPtr, Device **device, Device2 **device2 = NULL) = 0;
 
 	protected:
@@ -79,116 +79,116 @@ namespace PT {
 	};
 
 	// +----------------+
-	// | デバイスクラス |
+	// | �f�o�C�X�N���X |
 	// +----------------+
-	// このインスタンス 1 つがボード 1 枚に対応しています。
+	// ���̃C���X�^���X 1 ���{�[�h 1 ���ɑΉ����Ă��܂��B
 	class Device {
 	public:
 		// ----
-		// 解放
+		// ���
 		// ----
 
-		// [機能] インスタンスを解放
-		// [説明] delete は使えません。この関数を呼び出してください。
-		// [返値] STATUS_DEVICE_MUST_BE_CLOSED_ERROR → デバイスがオープン状態なのでインスタンスを解放できない
+		// [�@�\] �C���X�^���X�����
+		// [����] delete �͎g���܂���B���̊֐����Ăяo���Ă��������B
+		// [�Ԓl] STATUS_DEVICE_MUST_BE_CLOSED_ERROR �� �f�o�C�X���I�[�v����ԂȂ̂ŃC���X�^���X������ł��Ȃ�
 		virtual status Delete() = 0;
 		
 		// ------------------
-		// オープン・クローズ
+		// �I�[�v���E�N���[�Y
 		// ------------------
 
-		// [機能] デバイスのオープン
-		// [説明] 以下の手順に沿って行われます。
-		//        1. 既にデバイスがオープンされていないかを確認する。
-		//        2. リビジョンID (コンフィギュレーション空間 アドレス 0x08) が 0x01 であるかを調べる。
-		//        3. コンフィギュレーション空間のデバイス固有レジスタ領域を使って PCI バスでのビット化けがないかを確認する。
-		//        4. この SDK で制御が可能な FPGA 回路のバージョンであるかを確認する。
-		// [返値] STATUS_DEVICE_IS_ALREADY_OPEN_ERROR   → デバイスは既にオープンされている
-		//        STATUS_WD_PciGetCardInfo_ERROR        → WD_PciGetCardInfo() でエラーが発生
-		//        STATUS_WD_PciGetCardInfo_Bus_ERROR    → バス情報数が 1 以外
-		//        STATUS_WD_PciGetCardInfo_Memory_ERROR → メモリ情報数が 1 以外
-		//        STATUS_WD_CardRegister_ERROR          → WD_CardRegister() でエラーが発生
-		//        STATUS_WD_PciConfigDump_ERROR         → WD_PciConfigDump() でエラーが発生
-		//        STATUS_CONFIG_REVISION_ERROR          → リビジョンID が 0x01 でない
-		//        STATUS_PCI_BUS_ERROR                  → PCI バスでのビット化けが発生
-		//        STATUS_PCI_BASE_ADDRESS_ERROR         → コンフィギュレーション空間の BaseAddress0 が 0
-		//        STATUS_FPGA_VERSION_ERROR             → 対応していない FPGA 回路バージョン
-		//        STATUS_WD_CardCleanupSetup_ERROR      → WD_CardCleanupSetup() でエラーが発生
-		//        STATUS_DCM_LOCK_TIMEOUT_ERROR         → DCM が一定時間経過後もロック状態にならない
-		//        STATUS_DCM_SHIFT_TIMEOUT_ERROR        → DCM のフェーズシフトが一定時間経過後も完了しない
+		// [�@�\] �f�o�C�X�̃I�[�v��
+		// [����] �ȉ��̎菇�ɉ����čs���܂��B
+		//        1. ���Ƀf�o�C�X���I�[�v������Ă��Ȃ������m�F����B
+		//        2. ���r�W����ID (�R���t�B�M�����[�V������� �A�h���X 0x08) �� 0x01 �ł��邩�𒲂ׂ�B
+		//        3. �R���t�B�M�����[�V������Ԃ̃f�o�C�X�ŗL���W�X�^�̈���g���� PCI �o�X�ł̃r�b�g�������Ȃ������m�F����B
+		//        4. ���� SDK �Ő��䂪�\�� FPGA ��H�̃o�[�W�����ł��邩���m�F����B
+		// [�Ԓl] STATUS_DEVICE_IS_ALREADY_OPEN_ERROR   �� �f�o�C�X�͊��ɃI�[�v������Ă���
+		//        STATUS_WD_PciGetCardInfo_ERROR        �� WD_PciGetCardInfo() �ŃG���[������
+		//        STATUS_WD_PciGetCardInfo_Bus_ERROR    �� �o�X��񐔂� 1 �ȊO
+		//        STATUS_WD_PciGetCardInfo_Memory_ERROR �� ��������񐔂� 1 �ȊO
+		//        STATUS_WD_CardRegister_ERROR          �� WD_CardRegister() �ŃG���[������
+		//        STATUS_WD_PciConfigDump_ERROR         �� WD_PciConfigDump() �ŃG���[������
+		//        STATUS_CONFIG_REVISION_ERROR          �� ���r�W����ID �� 0x01 �łȂ�
+		//        STATUS_PCI_BUS_ERROR                  �� PCI �o�X�ł̃r�b�g����������
+		//        STATUS_PCI_BASE_ADDRESS_ERROR         �� �R���t�B�M�����[�V������Ԃ� BaseAddress0 �� 0
+		//        STATUS_FPGA_VERSION_ERROR             �� �Ή����Ă��Ȃ� FPGA ��H�o�[�W����
+		//        STATUS_WD_CardCleanupSetup_ERROR      �� WD_CardCleanupSetup() �ŃG���[������
+		//        STATUS_DCM_LOCK_TIMEOUT_ERROR         �� DCM ����莞�Ԍo�ߌ�����b�N��ԂɂȂ�Ȃ�
+		//        STATUS_DCM_SHIFT_TIMEOUT_ERROR        �� DCM �̃t�F�[�Y�V�t�g����莞�Ԍo�ߌ���������Ȃ�
 		virtual status Open() = 0;
 
-		// [機能] デバイスのクローズ
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
+		// [�@�\] �f�o�C�X�̃N���[�Y
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
 		virtual status Close() = 0;
 
 		// --------------------------------------
-		// PCI クロックカウンタ・レイテンシタイマ
+		// PCI �N���b�N�J�E���^�E���C�e���V�^�C�}
 		// --------------------------------------
 
-		// [機能] PCI クロックカウンタを取得
-		// [説明] カウンタ長は 32 ビットです。0xffffffff の次は 0 になります。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 counter が NULL
+		// [�@�\] PCI �N���b�N�J�E���^���擾
+		// [����] �J�E���^���� 32 �r�b�g�ł��B0xffffffff �̎��� 0 �ɂȂ�܂��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� counter �� NULL
 		virtual status GetPciClockCounter(uint *counter) = 0;
 
-		// [機能] PCI レイテンシタイマ値の設定・取得
-		// [説明] 下位 3 ビットは実装されていないため、取得した値は 8 の倍数になります。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 latencyTimer が NULL (GetPciLatencyTimer のみ)
-		//        STATUS_WD_PciConfigDump_ERROR   → WD_PciConfigDump() でエラーが発生
+		// [�@�\] PCI ���C�e���V�^�C�}�l�̐ݒ�E�擾
+		// [����] ���� 3 �r�b�g�͎�������Ă��Ȃ����߁A�擾�����l�� 8 �̔{���ɂȂ�܂��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� latencyTimer �� NULL (GetPciLatencyTimer �̂�)
+		//        STATUS_WD_PciConfigDump_ERROR   �� WD_PciConfigDump() �ŃG���[������
 		virtual status SetPciLatencyTimer(byte  latencyTimer)       = 0;
 		virtual status GetPciLatencyTimer(byte *latencyTimer) const = 0;
 
 		// ------------
-		// 電源・初期化
+		// �d���E������
 		// ------------
 
 		enum LnbPower {
-			LNB_POWER_OFF,	// オフ
-			LNB_POWER_15V,	// 15V 出力
-			LNB_POWER_11V	// 11V 出力 (正確には PCI スロットの +12V から 0.6V 程度を引いた値)
+			LNB_POWER_OFF,	// �I�t
+			LNB_POWER_15V,	// 15V �o��
+			LNB_POWER_11V	// 11V �o�� (���m�ɂ� PCI �X���b�g�� +12V ���� 0.6V ���x���������l)
 		};
 
-		// [機能] LNB 電源制御
-		// [説明] チューナーの電源とは独立に制御可能です。デフォルト値は LNB_POWER_OFF です。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 lnbPower が NULL (GetLnbPower のみ)
+		// [�@�\] LNB �d������
+		// [����] �`���[�i�[�̓d���Ƃ͓Ɨ��ɐ���\�ł��B�f�t�H���g�l�� LNB_POWER_OFF �ł��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� lnbPower �� NULL (GetLnbPower �̂�)
 		virtual status SetLnbPower(LnbPower  lnbPower)       = 0;
 		virtual status GetLnbPower(LnbPower *lnbPower) const = 0;
 
-		// [機能] デバイスをクローズ（異常終了にともなうクローズを含む）時の LNB 電源制御
-		// [説明] デフォルト値は LNB_POWER_OFF です。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR  → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR       → 引数 lnbPower が NULL (GetLnbPowerWhenClose のみ)
-		//        STATUS_WD_CardCleanupSetup_ERROR → WD_CardCleanupSetup() でエラーが発生 (SetLnbPowerWhenClose のみ)
+		// [�@�\] �f�o�C�X���N���[�Y�i�ُ�I���ɂƂ��Ȃ��N���[�Y���܂ށj���� LNB �d������
+		// [����] �f�t�H���g�l�� LNB_POWER_OFF �ł��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR  �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR       �� ���� lnbPower �� NULL (GetLnbPowerWhenClose �̂�)
+		//        STATUS_WD_CardCleanupSetup_ERROR �� WD_CardCleanupSetup() �ŃG���[������ (SetLnbPowerWhenClose �̂�)
 		virtual status SetLnbPowerWhenClose(LnbPower  lnbPower)       = 0;
 		virtual status GetLnbPowerWhenClose(LnbPower *lnbPower) const = 0;
 
-		// [機能] チューナー電源・ハードウェアリセット制御
-		// [説明] TUNER_POWER_ON_RESET_ENABLE から TUNER_POWER_ON_RESET_DISABLE の遷移には最低 15ms の待ち時間が必要です。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tunerPowerReset が NULL (GetTunerPowerReset のみ)
-		enum TunerPowerReset {				// 電源／ハードウェアリセット
-			TUNER_POWER_OFF,				// オフ／イネーブル
-			TUNER_POWER_ON_RESET_ENABLE,	// オン／イネーブル
-			TUNER_POWER_ON_RESET_DISABLE	// オン／ディセーブル
+		// [�@�\] �`���[�i�[�d���E�n�[�h�E�F�A���Z�b�g����
+		// [����] TUNER_POWER_ON_RESET_ENABLE ���� TUNER_POWER_ON_RESET_DISABLE �̑J�ڂɂ͍Œ� 15ms �̑҂����Ԃ��K�v�ł��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tunerPowerReset �� NULL (GetTunerPowerReset �̂�)
+		enum TunerPowerReset {				// �d���^�n�[�h�E�F�A���Z�b�g
+			TUNER_POWER_OFF,				// �I�t�^�C�l�[�u��
+			TUNER_POWER_ON_RESET_ENABLE,	// �I���^�C�l�[�u��
+			TUNER_POWER_ON_RESET_DISABLE	// �I���^�f�B�Z�[�u��
 		};
 		virtual status SetTunerPowerReset(TunerPowerReset  tunerPowerReset)       = 0;
 		virtual status GetTunerPowerReset(TunerPowerReset *tunerPowerReset) const = 0;
 
-		// [機能] チューナー初期化
-		// [説明] SetTunerPowerReset(TUNER_POWER_ON_RESET_DISABLE) から最低 1μs 経過後に 1 回だけ呼び出します。 
-		//        引数 tuner は 0 基底のチューナー番号です。
-		//        PT1に限り PLL を初期化するために、内部的に SetFrequency(tuner, ISDB_S, 0) と SetFrequency(tuner, ISDB_T, 63) が
-		//        実行されます。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きい
-		//        STATUS_POWER_RESET_ERROR        → SetTunerPowerReset() で TUNER_POWER_ON_RESET_DISABLE 以外が指定されている
-		//        STATUS_I2C_ERROR                → 復調IC からリードしたレジスタ値が異常
+		// [�@�\] �`���[�i�[������
+		// [����] SetTunerPowerReset(TUNER_POWER_ON_RESET_DISABLE) ����Œ� 1��s �o�ߌ�� 1 �񂾂��Ăяo���܂��B 
+		//        ���� tuner �� 0 ���̃`���[�i�[�ԍ��ł��B
+		//        PT1�Ɍ��� PLL �����������邽�߂ɁA�����I�� SetFrequency(tuner, ISDB_S, 0) �� SetFrequency(tuner, ISDB_T, 63) ��
+		//        ���s����܂��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫��
+		//        STATUS_POWER_RESET_ERROR        �� SetTunerPowerReset() �� TUNER_POWER_ON_RESET_DISABLE �ȊO���w�肳��Ă���
+		//        STATUS_I2C_ERROR                �� ����IC ���烊�[�h�������W�X�^�l���ُ�
 		virtual status InitTuner(uint tuner) = 0;
 
-		// 受信方式
+		// ��M����
 		enum ISDB {
 			ISDB_S,
 			ISDB_T,
@@ -196,48 +196,48 @@ namespace PT {
 			ISDB_COUNT
 		};
 
-		// [機能] チューナー省電力制御
-		// [説明] チューナー初期後は省電力オンになっていますので、受信前に省電力をオフにする必要があります。
-		//        (PT1) 復調IC のみが対象です。チューナーユニット内の他の回路は SetTunerPowerReset(TUNER_POWER_OFF) としない限り、
-		//              電力を消費し続けます。復調IC の消費電力はチューナーモジュールの 15% です。
-		//        (PT2) RFフロントエンド回路全体と復調IC が対象です。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 isdb が範囲外
-		//                                           引数 sleep が NULL (GetTunerSleep のみ)
+		// [�@�\] �`���[�i�[�ȓd�͐���
+		// [����] �`���[�i�[������͏ȓd�̓I���ɂȂ��Ă��܂��̂ŁA��M�O�ɏȓd�͂��I�t�ɂ���K�v������܂��B
+		//        (PT1) ����IC �݂̂��Ώۂł��B�`���[�i�[���j�b�g���̑��̉�H�� SetTunerPowerReset(TUNER_POWER_OFF) �Ƃ��Ȃ�����A
+		//              �d�͂���������܂��B����IC �̏���d�͂̓`���[�i�[���W���[���� 15% �ł��B
+		//        (PT2) RF�t�����g�G���h��H�S�̂ƕ���IC ���Ώۂł��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� isdb ���͈͊O
+		//                                           ���� sleep �� NULL (GetTunerSleep �̂�)
 		virtual status SetTunerSleep(uint tuner, ISDB isdb, bool  sleep)       = 0;
 		virtual status GetTunerSleep(uint tuner, ISDB isdb, bool *sleep) const = 0;
 
 		// ----------
-		// 局発周波数
+		// �ǔ����g��
 		// ----------
 
-		// [機能] 局発周波数の制御
-		// [説明] offset で周波数の調整が可能です。単位は ISDB-S の場合は 1MHz、ISDB-T の場合は 1/7MHz です。
-		//        例えば、C24 を標準より 2MHz 高い周波数に設定するには SetFrequency(tuner, ISDB_T, 23, 7*2) とします。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 isdb が範囲外
-		//                                           引数 channel が NULL (GetFrequency のみ)
-		//        STATUS_TUNER_IS_SLEEP_ERROR     → チューナーが省電力状態のため設定不可 (SetFrequency のみ)
+		// [�@�\] �ǔ����g���̐���
+		// [����] offset �Ŏ��g���̒������\�ł��B�P�ʂ� ISDB-S �̏ꍇ�� 1MHz�AISDB-T �̏ꍇ�� 1/7MHz �ł��B
+		//        �Ⴆ�΁AC24 ��W����� 2MHz �������g���ɐݒ肷��ɂ� SetFrequency(tuner, ISDB_T, 23, 7*2) �Ƃ��܂��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� isdb ���͈͊O
+		//                                           ���� channel �� NULL (GetFrequency �̂�)
+		//        STATUS_TUNER_IS_SLEEP_ERROR     �� �`���[�i�[���ȓd�͏�Ԃ̂��ߐݒ�s�� (SetFrequency �̂�)
 		virtual status SetFrequency(uint tuner, ISDB isdb, uint  channel, int  offset = 0)       = 0;
 		virtual status GetFrequency(uint tuner, ISDB isdb, uint *channel, int *offset = 0) const = 0;
 
 		// (ISDB-S)
-		// PLL 周波数ステップが 1MHz のため、実際に設定される周波数は f' になります。
+		// PLL ���g���X�e�b�v�� 1MHz �̂��߁A���ۂɐݒ肳�����g���� f' �ɂȂ�܂��B
 		// +----+------+---------+---------+ +----+------+---------+---------+ +----+------+---------+---------+
 		// | ch | TP # | f (MHz) | f'(MHz) | | ch | TP # | f (MHz) | f'(MHz) | | ch | TP # | f (MHz) | f'(MHz) |
 		// +----+------+---------+---------+ +----+------+---------+---------+ +----+------+---------+---------+
-		// |  0 | BS 1 | 1049.48 | 1049.00 | | 12 | ND 2 | 1613.00 | (同左)  | | 24 | ND 1 | 1593.00 | (同左)  |
-		// |  1 | BS 3 | 1087.84 | 1088.00 | | 13 | ND 4 | 1653.00 | (同左)  | | 25 | ND 3 | 1633.00 | (同左)  |
-		// |  2 | BS 5 | 1126.20 | 1126.00 | | 14 | ND 6 | 1693.00 | (同左)  | | 26 | ND 5 | 1673.00 | (同左)  |
-		// |  3 | BS 7 | 1164.56 | 1165.00 | | 15 | ND 8 | 1733.00 | (同左)  | | 27 | ND 7 | 1713.00 | (同左)  |
-		// |  4 | BS 9 | 1202.92 | 1203.00 | | 16 | ND10 | 1773.00 | (同左)  | | 28 | ND 9 | 1753.00 | (同左)  |
-		// |  5 | BS11 | 1241.28 | 1241.00 | | 17 | ND12 | 1813.00 | (同左)  | | 29 | ND11 | 1793.00 | (同左)  |
-		// |  6 | BS13 | 1279.64 | 1280.00 | | 18 | ND14 | 1853.00 | (同左)  | | 30 | ND13 | 1833.00 | (同左)  |
-		// |  7 | BS15 | 1318.00 | (同左)  | | 19 | ND16 | 1893.00 | (同左)  | | 31 | ND15 | 1873.00 | (同左)  |
-		// |  8 | BS17 | 1356.36 | 1356.00 | | 20 | ND18 | 1933.00 | (同左)  | | 32 | ND17 | 1913.00 | (同左)  |
-		// |  9 | BS19 | 1394.72 | 1395.00 | | 21 | ND20 | 1973.00 | (同左)  | | 33 | ND19 | 1953.00 | (同左)  |
-		// | 10 | BS21 | 1433.08 | 1433.00 | | 22 | ND22 | 2013.00 | (同左)  | | 34 | ND21 | 1993.00 | (同左)  |
-		// | 11 | BS23 | 1471.44 | 1471.00 | | 23 | ND24 | 2053.00 | (同左)  | | 35 | ND23 | 2033.00 | (同左)  |
+		// |  0 | BS 1 | 1049.48 | 1049.00 | | 12 | ND 2 | 1613.00 | (����)  | | 24 | ND 1 | 1593.00 | (����)  |
+		// |  1 | BS 3 | 1087.84 | 1088.00 | | 13 | ND 4 | 1653.00 | (����)  | | 25 | ND 3 | 1633.00 | (����)  |
+		// |  2 | BS 5 | 1126.20 | 1126.00 | | 14 | ND 6 | 1693.00 | (����)  | | 26 | ND 5 | 1673.00 | (����)  |
+		// |  3 | BS 7 | 1164.56 | 1165.00 | | 15 | ND 8 | 1733.00 | (����)  | | 27 | ND 7 | 1713.00 | (����)  |
+		// |  4 | BS 9 | 1202.92 | 1203.00 | | 16 | ND10 | 1773.00 | (����)  | | 28 | ND 9 | 1753.00 | (����)  |
+		// |  5 | BS11 | 1241.28 | 1241.00 | | 17 | ND12 | 1813.00 | (����)  | | 29 | ND11 | 1793.00 | (����)  |
+		// |  6 | BS13 | 1279.64 | 1280.00 | | 18 | ND14 | 1853.00 | (����)  | | 30 | ND13 | 1833.00 | (����)  |
+		// |  7 | BS15 | 1318.00 | (����)  | | 19 | ND16 | 1893.00 | (����)  | | 31 | ND15 | 1873.00 | (����)  |
+		// |  8 | BS17 | 1356.36 | 1356.00 | | 20 | ND18 | 1933.00 | (����)  | | 32 | ND17 | 1913.00 | (����)  |
+		// |  9 | BS19 | 1394.72 | 1395.00 | | 21 | ND20 | 1973.00 | (����)  | | 33 | ND19 | 1953.00 | (����)  |
+		// | 10 | BS21 | 1433.08 | 1433.00 | | 22 | ND22 | 2013.00 | (����)  | | 34 | ND21 | 1993.00 | (����)  |
+		// | 11 | BS23 | 1471.44 | 1471.00 | | 23 | ND24 | 2053.00 | (����)  | | 35 | ND23 | 2033.00 | (����)  |
 		// +----+------+---------+---------+ +----+------+---------+---------+ +----+------+---------+---------+
 		// 
 		// (ISDB-T)
@@ -269,7 +269,7 @@ namespace PT {
 		// |  22 | C23 | 225+1/7 | |  45 | C46 | 363+1/7 | |  68 |  18 | 503+1/7 | |  91 |  41 | 641+1/7 |
 		// +-----+-----+---------+ +-----+-----+---------+ +-----+-----+---------+ +-----+-----+---------+
 		// 
-		// C24～C27 は、ケーブルテレビ局により下記の周波数で送信されている場合があります。
+		// C24�`C27 �́A�P�[�u���e���r�ǂɂ�艺�L�̎��g���ő��M����Ă���ꍇ������܂��B
 		// +-----+---------+
 		// | Ch. | f (MHz) |
 		// +-----+---------+
@@ -280,73 +280,73 @@ namespace PT {
 		// +-----+---------+
 
 		// ----------
-		// 周波数誤差
+		// ���g���덷
 		// ----------
 
-		// [機能] 周波数誤差を取得
-		// [説明] 値の意味は次の通りです。
-		//        クロック周波数誤差: clock/100 (ppm)
-		//        キャリア周波数誤差: carrier (Hz)
-		//        放送波の周波数精度は十分に高い仮定すると、誤差が発生する要素として以下のようなものが考えられます。
-		//        (ISDB-S) LNB での周波数変換精度 / 衛星側 PLL-IC に接続されている振動子の精度 / 復調 IC に接続されている振動子の精度
-		//        (ISDB-T) 地上側 PLL-IC に接続されている振動子の精度 / 復調 IC に接続されている振動子の精度
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 isdb が範囲外
-		//                                           引数 clock, carrier のいずれかが NULL
-		//        STATUS_TUNER_IS_SLEEP_ERROR     → チューナーが省電力状態
+		// [�@�\] ���g���덷���擾
+		// [����] �l�̈Ӗ��͎��̒ʂ�ł��B
+		//        �N���b�N���g���덷: clock/100 (ppm)
+		//        �L�����A���g���덷: carrier (Hz)
+		//        �����g�̎��g�����x�͏\���ɍ������肷��ƁA�덷����������v�f�Ƃ��Ĉȉ��̂悤�Ȃ��̂��l�����܂��B
+		//        (ISDB-S) LNB �ł̎��g���ϊ����x / �q���� PLL-IC �ɐڑ�����Ă���U���q�̐��x / ���� IC �ɐڑ�����Ă���U���q�̐��x
+		//        (ISDB-T) �n�㑤 PLL-IC �ɐڑ�����Ă���U���q�̐��x / ���� IC �ɐڑ�����Ă���U���q�̐��x
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� isdb ���͈͊O
+		//                                           ���� clock, carrier �̂����ꂩ�� NULL
+		//        STATUS_TUNER_IS_SLEEP_ERROR     �� �`���[�i�[���ȓd�͏��
 		virtual status GetFrequencyOffset(uint tuner, ISDB isdb, int *clock, int *carrier) = 0;
 
 		// --------
-		// C/N・AGC
+		// C/N�EAGC
 		// --------
 
-		// [機能] C/N と AGC を取得
-		// [説明] C/N は低レイテンシで測定できるため、アンテナの向きを調整するのに便利です。
-		//        値の意味は次の通りです。
+		// [�@�\] C/N �� AGC ���擾
+		// [����] C/N �͒჌�C�e���V�ő���ł��邽�߁A�A���e�i�̌����𒲐�����̂ɕ֗��ł��B
+		//        �l�̈Ӗ��͎��̒ʂ�ł��B
 		//        C/N                : cn100/100 (dB)
-		//        現在の AGC 値      : currentAgc
-		//        利得最大時の AGC 値: maxAgc
-		//        currentAgc の範囲は 0 から maxAgc までです。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 isdb が範囲外
-		//                                           引数 cn100, currentAgc, maxAgc のいずれかが NULL
-		//        STATUS_TUNER_IS_SLEEP_ERROR     → チューナーが省電力状態
+		//        ���݂� AGC �l      : currentAgc
+		//        �����ő厞�� AGC �l: maxAgc
+		//        currentAgc �͈̔͂� 0 ���� maxAgc �܂łł��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� isdb ���͈͊O
+		//                                           ���� cn100, currentAgc, maxAgc �̂����ꂩ�� NULL
+		//        STATUS_TUNER_IS_SLEEP_ERROR     �� �`���[�i�[���ȓd�͏��
 		virtual status GetCnAgc(uint tuner, ISDB isdb, uint *cn100, uint *currentAgc, uint *maxAgc) = 0;
 
 		// -------------------
-		// TS-ID (ISDB-S のみ)
+		// TS-ID (ISDB-S �̂�)
 		// -------------------
 
-		// [機能] TS-ID を設定
-		// [説明] 設定値が復調IC の動作に反映されるまで時間が掛かります。
-		//        GetLayerS() を呼び出す前に、GetIdS() を使って切り替えが完了したことを確認してください。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きい
+		// [�@�\] TS-ID ��ݒ�
+		// [����] �ݒ�l������IC �̓���ɔ��f�����܂Ŏ��Ԃ��|����܂��B
+		//        GetLayerS() ���Ăяo���O�ɁAGetIdS() ���g���Đ؂�ւ��������������Ƃ��m�F���Ă��������B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫��
 		virtual status SetIdS(uint tuner, uint id) = 0;
 
-		// [機能] 現在処理中の TS-ID を取得
-		// [説明] GetLayerS() で取得できるレイヤ情報は、この関数で示される TS-ID のものになります。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きい。または引数 id が NULL
+		// [�@�\] ���ݏ������� TS-ID ���擾
+		// [����] GetLayerS() �Ŏ擾�ł��郌�C�����́A���̊֐��Ŏ������ TS-ID �̂��̂ɂȂ�܂��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫���B�܂��͈��� id �� NULL
 		virtual status GetIdS(uint tuner, uint *id) = 0;
 
 		// ------------
-		// エラーレート
+		// �G���[���[�g
 		// ------------
 
-		// 階層インデックス
+		// �K�w�C���f�b�N�X
 		enum LayerIndex {
 			// ISDB-S
-			LAYER_INDEX_L = 0,	// 低階層
-			LAYER_INDEX_H,		// 高階層
+			LAYER_INDEX_L = 0,	// ��K�w
+			LAYER_INDEX_H,		// ���K�w
 
 			// ISDB-T
-			LAYER_INDEX_A = 0,	// A 階層
-			LAYER_INDEX_B,		// B 階層
-			LAYER_INDEX_C		// C 階層
+			LAYER_INDEX_A = 0,	// A �K�w
+			LAYER_INDEX_B,		// B �K�w
+			LAYER_INDEX_C		// C �K�w
 		};
 
-		// 階層数
+		// �K�w��
 		enum LayerCount {
 			// ISDB-S
 			LAYER_COUNT_S = LAYER_INDEX_H + 1,
@@ -355,100 +355,100 @@ namespace PT {
 			LAYER_COUNT_T = LAYER_INDEX_C + 1
 		};
 
-		// エラーレート
+		// �G���[���[�g
 		struct ErrorRate {
 			uint Numerator, Denominator;
 		};
 
-		// [機能] リードソロモン復号で訂正されたエラーレートを取得
-		// [説明] 測定に時間が掛かりますが、受信品質を正確に把握するには C/N ではなくこのエラーレートを参考にしてください。
-		//        ひとつの目安として 2×10^-4 以下であれば、リードソロモン復号後にほぼエラーフリーになるといわれています。
-		//        エラーレートの集計単位は次の通りです。
-		//        ISDB-S: 1024 フレーム
-		//        ISDB-T: 32 フレーム (モード 1,2) / 8 フレーム (モード 3)
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner, isdb, layerIndex が範囲外。または errorRate が NULL
+		// [�@�\] ���[�h�\�����������Œ������ꂽ�G���[���[�g���擾
+		// [����] ����Ɏ��Ԃ��|����܂����A��M�i���𐳊m�ɔc������ɂ� C/N �ł͂Ȃ����̃G���[���[�g���Q�l�ɂ��Ă��������B
+		//        �ЂƂ̖ڈ��Ƃ��� 2�~10^-4 �ȉ��ł���΁A���[�h�\������������ɂقڃG���[�t���[�ɂȂ�Ƃ����Ă��܂��B
+		//        �G���[���[�g�̏W�v�P�ʂ͎��̒ʂ�ł��B
+		//        ISDB-S: 1024 �t���[��
+		//        ISDB-T: 32 �t���[�� (���[�h 1,2) / 8 �t���[�� (���[�h 3)
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner, isdb, layerIndex ���͈͊O�B�܂��� errorRate �� NULL
 		virtual status GetCorrectedErrorRate(uint tuner, ISDB isdb, LayerIndex layerIndex, ErrorRate *errorRate) = 0;
 
-		// [機能] リードソロモン復号で訂正されたエラーレートを計算するためのエラーカウンタを初期化
-		// [説明] 全階層のカウンタを初期化します。特定の階層のカウンタをリセットすることはできません。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 isdb が範囲外
+		// [�@�\] ���[�h�\�����������Œ������ꂽ�G���[���[�g���v�Z���邽�߂̃G���[�J�E���^��������
+		// [����] �S�K�w�̃J�E���^�����������܂��B����̊K�w�̃J�E���^�����Z�b�g���邱�Ƃ͂ł��܂���B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� isdb ���͈͊O
 		virtual status ResetCorrectedErrorCount(uint tuner, ISDB isdb) = 0;
 
-		// [機能] リードソロモン復号で訂正しきれなかった TS パケット数を取得
-		// [説明] 下位24ビットのみ有効です（回路規模を小さくするため回路番号01 にてビット数を縮小）。
-		//        0x??ffffff の次は 0x??000000 になります。
-		//        TS パケットの 2nd Byte MSB を数えても同じ数値になります。
-		//        このカウンタは DMA 転送開始時に初期化されます。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 isdb が範囲外。または引数 count が NULL
+		// [�@�\] ���[�h�\�����������Œ���������Ȃ����� TS �p�P�b�g�����擾
+		// [����] ����24�r�b�g�̂ݗL���ł��i��H�K�͂����������邽�߉�H�ԍ�01 �ɂăr�b�g�����k���j�B
+		//        0x??ffffff �̎��� 0x??000000 �ɂȂ�܂��B
+		//        TS �p�P�b�g�� 2nd Byte MSB �𐔂��Ă��������l�ɂȂ�܂��B
+		//        ���̃J�E���^�� DMA �]���J�n���ɏ���������܂��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� isdb ���͈͊O�B�܂��͈��� count �� NULL
 		virtual status GetErrorCount(uint tuner, ISDB isdb, uint *count) = 0;
 
 		// --------------------------
-		// TMCC・レイヤー・ロック判定
+		// TMCC�E���C���[�E���b�N����
 		// --------------------------
 
-		// ISDB-S TMCC 情報
-		// (参考) STD-B20 2.9 TMCC情報の構成 ～ 2.11 TMCC情報の更新
+		// ISDB-S TMCC ���
+		// (�Q�l) STD-B20 2.9 TMCC���̍\�� �` 2.11 TMCC���̍X�V
 		struct TmccS {
-			uint Indicator;		// 変更指示 (5ビット)
-			uint Mode[4];		// 伝送モードn (4ビット)
-			uint Slot[4];		// 伝送モードnへの割当スロット数 (6ビット)
-								// [相対TS／スロット情報は取得できません]
-			uint Id[8];			// 相対TS番号nに対するTS ID (16ビット)
-			uint Emergency;		// 起動制御信号 (1ビット)
-			uint UpLink;		// アップリンク制御情報 (4ビット)
-			uint ExtFlag;		// 拡張フラグ (1ビット)
-			uint ExtData[2];	// 拡張領域 (61ビット)
+			uint Indicator;		// �ύX�w�� (5�r�b�g)
+			uint Mode[4];		// �`�����[�hn (4�r�b�g)
+			uint Slot[4];		// �`�����[�hn�ւ̊����X���b�g�� (6�r�b�g)
+								// [����TS�^�X���b�g���͎擾�ł��܂���]
+			uint Id[8];			// ����TS�ԍ�n�ɑ΂���TS ID (16�r�b�g)
+			uint Emergency;		// �N������M�� (1�r�b�g)
+			uint UpLink;		// �A�b�v�����N������ (4�r�b�g)
+			uint ExtFlag;		// �g���t���O (1�r�b�g)
+			uint ExtData[2];	// �g���̈� (61�r�b�g)
 		};
 
-		// [機能] ISDB-S の TMCC 情報を取得
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 tmcc が NULL
+		// [�@�\] ISDB-S �� TMCC �����擾
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� tmcc �� NULL
 		virtual status GetTmccS(uint tuner, TmccS *tmcc) = 0;
 
-		// ISDB-S 階層情報
+		// ISDB-S �K�w���
 		struct LayerS {
-			uint Mode [LAYER_COUNT_S];	// 伝送モード (3ビット) 
-			uint Count[LAYER_COUNT_S];	// ダミースロットを含めた割当スロット数 (6ビット)
+			uint Mode [LAYER_COUNT_S];	// �`�����[�h (3�r�b�g) 
+			uint Count[LAYER_COUNT_S];	// �_�~�[�X���b�g���܂߂������X���b�g�� (6�r�b�g)
 		};
 
-		// [機能] ISDB-S のレイヤ情報を取得
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 layerS が NULL
+		// [�@�\] ISDB-S �̃��C�������擾
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� layerS �� NULL
 		virtual status GetLayerS(uint tuner, LayerS *layerS) = 0;
 
-		// ISDB-T TMCC 情報
-		// (参考) STD-B31 3.15.6 TMCC情報 ～ 3.15.6.8 セグメント数
+		// ISDB-T TMCC ���
+		// (�Q�l) STD-B31 3.15.6 TMCC��� �` 3.15.6.8 �Z�O�����g��
 		struct TmccT {
-			uint System;					// システム識別 (2ビット)
-			uint Indicator;					// 伝送パラメータ切り替え指標 (4ビット)
-			uint Emergency;					// 緊急警報放送用起動フラグ (1ビット)
-											// カレント情報
-			uint Partial;					// 部分受信フラグ (1ビット)
-											// 階層情報
-			uint Mode      [LAYER_COUNT_T];	// キャリア変調方式 (3ビット)
-			uint Rate      [LAYER_COUNT_T];	// 畳込み符号化率 (3ビット)
-			uint Interleave[LAYER_COUNT_T];	// インターリーブ長 (3ビット)
-			uint Segment   [LAYER_COUNT_T];	// セグメント数 (4ビット)
-											// [ネクスト情報は取得できません]
-			uint Phase;						// 連結送信位相補正量 (3ビット)
-			uint Reserved;					// リザーブ (12ビット)
+			uint System;					// �V�X�e������ (2�r�b�g)
+			uint Indicator;					// �`���p�����[�^�؂�ւ��w�W (4�r�b�g)
+			uint Emergency;					// �ً}�x������p�N���t���O (1�r�b�g)
+											// �J�����g���
+			uint Partial;					// ������M�t���O (1�r�b�g)
+											// �K�w���
+			uint Mode      [LAYER_COUNT_T];	// �L�����A�ϒ����� (3�r�b�g)
+			uint Rate      [LAYER_COUNT_T];	// �􍞂ݕ������� (3�r�b�g)
+			uint Interleave[LAYER_COUNT_T];	// �C���^�[���[�u�� (3�r�b�g)
+			uint Segment   [LAYER_COUNT_T];	// �Z�O�����g�� (4�r�b�g)
+											// [�l�N�X�g���͎擾�ł��܂���]
+			uint Phase;						// �A�����M�ʑ��␳�� (3�r�b�g)
+			uint Reserved;					// ���U�[�u (12�r�b�g)
 		};
 
-		// [機能] ISDB-T の TMCC 情報を取得
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 tmcc が NULL
+		// [�@�\] ISDB-T �� TMCC �����擾
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� tmcc �� NULL
 		virtual status GetTmccT(uint tuner, TmccT *tmcc) = 0;
 
-		// [機能] ISDB-T ロック判定を取得
-		// [説明] レイヤが存在し、なおかつそのレイヤがエラーフリーであるときに true になります。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 locked が NULL
+		// [�@�\] ISDB-T ���b�N������擾
+		// [����] ���C�������݂��A�Ȃ������̃��C�����G���[�t���[�ł���Ƃ��� true �ɂȂ�܂��B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� locked �� NULL
 		virtual status GetLockedT(uint tuner, bool locked[LAYER_COUNT_T]) = 0;
 
-		// 受信階層
+		// ��M�K�w
 		enum LayerMask {
 			LAYER_MASK_NONE,
 
@@ -462,183 +462,183 @@ namespace PT {
 			LAYER_MASK_C = 1 << LAYER_INDEX_C
 		};
 
-		// [機能] 受信階層の設定
-		// [説明] ISDB-S の低階層を受信しないように設定することはできません。
-		// [返値] STATUS_DEVICE_IS_NOT_OPEN_ERROR → デバイスがオープンされていない
-		//        STATUS_INVALID_PARAM_ERROR      → 引数 tuner が 1 より大きいか引数 isdb が範囲外
-		//                                           引数 layerMask が範囲外 (SetLayerEnable のみ)
-		//                                           引数 layerMask が NULL (GetLayerEnable のみ)
+		// [�@�\] ��M�K�w�̐ݒ�
+		// [����] ISDB-S �̒�K�w����M���Ȃ��悤�ɐݒ肷�邱�Ƃ͂ł��܂���B
+		// [�Ԓl] STATUS_DEVICE_IS_NOT_OPEN_ERROR �� �f�o�C�X���I�[�v������Ă��Ȃ�
+		//        STATUS_INVALID_PARAM_ERROR      �� ���� tuner �� 1 ���傫�������� isdb ���͈͊O
+		//                                           ���� layerMask ���͈͊O (SetLayerEnable �̂�)
+		//                                           ���� layerMask �� NULL (GetLayerEnable �̂�)
 		virtual status SetLayerEnable(uint tuner, ISDB isdb, LayerMask  layerMask)       = 0;
 		virtual status GetLayerEnable(uint tuner, ISDB isdb, LayerMask *layerMask) const = 0;
 
 		// --------
-		// DMA 転送
+		// DMA �]��
 		// --------
 
-		// バッファサイズ
+		// �o�b�t�@�T�C�Y
 		enum {
 			BUFFER_PAGE_COUNT = 511
 		};
 
-		// バッファ情報
+		// �o�b�t�@���
 		struct BufferInfo {
 			uint VirtualSize;
 			uint VirtualCount;
 			uint LockSize;
 		};
-		// バッファはドライバ内部で VirtualAlloc(4096*BUFFER_PAGE_COUNT*VirtualSize) を VirtualCount 回呼び出すことにより確保されます。
-		// VirtualCount が 2 以上の場合はバッファが分割されるため、アドレスが不連続になることにご注意ください。
-		// LockSize はドライバ内部でメモリをロックする単位です。
+		// �o�b�t�@�̓h���C�o������ VirtualAlloc(4096*BUFFER_PAGE_COUNT*VirtualSize) �� VirtualCount ��Ăяo�����Ƃɂ��m�ۂ���܂��B
+		// VirtualCount �� 2 �ȏ�̏ꍇ�̓o�b�t�@����������邽�߁A�A�h���X���s�A���ɂȂ邱�Ƃɂ����ӂ��������B
+		// LockSize �̓h���C�o�����Ń����������b�N����P�ʂł��B
 		// 
-		// VirtualSize の範囲は 0 以外の任意の数値です。
-		// (VirtualSize * VirtualCount) は転送カウンタのビット長による制限を受けるため、範囲は 1～4095 です。
-		// (VirtualSize % LockSize) は 0 でなければなりません。
+		// VirtualSize �͈̔͂� 0 �ȊO�̔C�ӂ̐��l�ł��B
+		// (VirtualSize * VirtualCount) �͓]���J�E���^�̃r�b�g���ɂ�鐧�����󂯂邽�߁A�͈͂� 1�`4095 �ł��B
+		// (VirtualSize % LockSize) �� 0 �łȂ���΂Ȃ�܂���B
 		// 
-		// DMA バッファは CPU 側から見てキャッシュ禁止になっています。このため、バッファの内容をバイト単位で複数回
-		// 読み出す場合などに速度低下が発生します。これを避けるにはデータをキャッシュ可能なメモリにコピーして、
-		// コピーされたデータにアクセスします。
+		// DMA �o�b�t�@�� CPU �����猩�ăL���b�V���֎~�ɂȂ��Ă��܂��B���̂��߁A�o�b�t�@�̓��e���o�C�g�P�ʂŕ�����
+		// �ǂݏo���ꍇ�Ȃǂɑ��x�ቺ���������܂��B����������ɂ̓f�[�^���L���b�V���\�ȃ������ɃR�s�[���āA
+		// �R�s�[���ꂽ�f�[�^�ɃA�N�Z�X���܂��B
 
-		// [機能] DMA バッファの確保・解放
-		// [説明] DMA バッファを開放するには SetBufferInfo(NULL) とします。
-		//        バッファが確保されていないときに GetBufferInfo() を呼び出すと、bufferInfo が指す全てのメンバは 0 になります。
-		//        バッファの構成を変更する場合は、現在のバッファを解放してから改めて確保します。
+		// [�@�\] DMA �o�b�t�@�̊m�ہE���
+		// [����] DMA �o�b�t�@���J������ɂ� SetBufferInfo(NULL) �Ƃ��܂��B
+		//        �o�b�t�@���m�ۂ���Ă��Ȃ��Ƃ��� GetBufferInfo() ���Ăяo���ƁAbufferInfo ���w���S�Ẵ����o�� 0 �ɂȂ�܂��B
+		//        �o�b�t�@�̍\����ύX����ꍇ�́A���݂̃o�b�t�@��������Ă�����߂Ċm�ۂ��܂��B
 		virtual status SetBufferInfo(const BufferInfo *bufferInfo)       = 0;
 		virtual status GetBufferInfo(      BufferInfo *bufferInfo) const = 0;
 
-		// [機能] DMA バッファのポインタを取得
-		// [説明] index で指定した DMA バッファのポインタを取得します。index の範囲は 0 から BufferInfo::VirtualCount-1 です。
+		// [�@�\] DMA �o�b�t�@�̃|�C���^���擾
+		// [����] index �Ŏw�肵�� DMA �o�b�t�@�̃|�C���^���擾���܂��Bindex �͈̔͂� 0 ���� BufferInfo::VirtualCount-1 �ł��B
 		virtual status GetBufferPtr(uint index, void **ptr) const = 0;
 
-		// [機能] 転送カウンタをリセット・インクリメント
-		// [説明] FPGA 回路は次のように動作します。
+		// [�@�\] �]���J�E���^�����Z�b�g�E�C���N�������g
+		// [����] FPGA ��H�͎��̂悤�ɓ��삵�܂��B
 		//			while (true) {
-		//				/* 転送カウンタをチェック */
-		//				if (転送カウンタ == 0) {
+		//				/* �]���J�E���^���`�F�b�N */
+		//				if (�]���J�E���^ == 0) {
 		//					TransferInfo::TransferCounter0 = true;
 		//					break;
 		//				}
-		//				if (転送カウンタ <= 1) {
+		//				if (�]���J�E���^ <= 1) {
 		//					TransferInfo::TransferCounter1 = true;
-		//					/* ここでは break しない */
+		//					/* �����ł� break ���Ȃ� */
 		//				}
 		//
-		//				/* 転送カウンタをデクリメント */
-		//				転送カウンタ--;
+		//				/* �]���J�E���^���f�N�������g */
+		//				�]���J�E���^--;
 		//
-		//				/* データ転送 */
+		//				/* �f�[�^�]�� */
 		//				for (uint i=0; i<BUFFER_PAGE_COUNT; i++) {
-		//					/* 4096+64 バイトのデータが溜まるまで待つ */
+		//					/* 4096+64 �o�C�g�̃f�[�^�����܂�܂ő҂� */
 		//					while (true) {
-		//						if (4096+64 <= バッファ上のデータバイト数) {
+		//						if (4096+64 <= �o�b�t�@��̃f�[�^�o�C�g��) {
 		//							break;
 		//						}
 		//					}
-		//					/* 4096 バイトのデータを転送 */
+		//					/* 4096 �o�C�g�̃f�[�^��]�� */
 		//					Transfer();
 		//				}
 		//			}
-		//        ホスト側からは、4096*BUFFER_PAGE_COUNT バイト単位で転送カウンタをインクリメントすることになります。
-		//        転送カウンタ長は 12 ビットです。
+		//        �z�X�g������́A4096*BUFFER_PAGE_COUNT �o�C�g�P�ʂœ]���J�E���^���C���N�������g���邱�ƂɂȂ�܂��B
+		//        �]���J�E���^���� 12 �r�b�g�ł��B
 		virtual status ResetTransferCounter() = 0;
 		virtual status IncrementTransferCounter() = 0;
 
-		// [機能] ストリームごとの転送制御
-		// [説明] 各ストリームを転送するかどうかを設定することができます。
-		//        必要のないストリームをオフにすることで PCI バスの帯域を無駄に使うことがなくなります。
-		//        DMA 転送動作中にも変更可能です。
+		// [�@�\] �X�g���[�����Ƃ̓]������
+		// [����] �e�X�g���[����]�����邩�ǂ�����ݒ肷�邱�Ƃ��ł��܂��B
+		//        �K�v�̂Ȃ��X�g���[�����I�t�ɂ��邱�Ƃ� PCI �o�X�̑ш�𖳑ʂɎg�����Ƃ��Ȃ��Ȃ�܂��B
+		//        DMA �]�����쒆�ɂ��ύX�\�ł��B
 		virtual status SetStreamEnable(uint tuner, ISDB isdb, bool  enable)       = 0;
 		virtual status GetStreamEnable(uint tuner, ISDB isdb, bool *enable) const = 0;
 
-		// [機能] ストリームごとの 3 ビット補助データの設定
-		// [説明] 1 TS パケット(188バイト) は 63 マイクロパケットを使って転送されますが、
-		//        3バイト×63マイクロパケット=189バイトとなり、末尾のマイクロパケットには未使用部分が 1 バイトあります。
-		//        このバイトの下位 3 ビットをユーザーが自由に設定することができます。
-		//        復調IC からの信号を FPGA 内にデータを取り込んでからできるだけ早い時刻に 3 ビットのデータが
-		//        付加されますので、タイムスタンプ代わりに利用することができます。
-		//        FPGA 内では値の書き込みは PCI クロックに同期し、値の読み出しは TS クロックに同期しています。
-		//        このため、設定する数列はグレイコードなどのハミング距離が 1 のものを使ってください。
+		// [�@�\] �X�g���[�����Ƃ� 3 �r�b�g�⏕�f�[�^�̐ݒ�
+		// [����] 1 TS �p�P�b�g(188�o�C�g) �� 63 �}�C�N���p�P�b�g���g���ē]������܂����A
+		//        3�o�C�g�~63�}�C�N���p�P�b�g=189�o�C�g�ƂȂ�A�����̃}�C�N���p�P�b�g�ɂ͖��g�p������ 1 �o�C�g����܂��B
+		//        ���̃o�C�g�̉��� 3 �r�b�g�����[�U�[�����R�ɐݒ肷�邱�Ƃ��ł��܂��B
+		//        ����IC ����̐M���� FPGA ���Ƀf�[�^����荞��ł���ł��邾������������ 3 �r�b�g�̃f�[�^��
+		//        �t������܂��̂ŁA�^�C���X�^���v����ɗ��p���邱�Ƃ��ł��܂��B
+		//        FPGA ���ł͒l�̏������݂� PCI �N���b�N�ɓ������A�l�̓ǂݏo���� TS �N���b�N�ɓ������Ă��܂��B
+		//        ���̂��߁A�ݒ肷�鐔��̓O���C�R�[�h�Ȃǂ̃n�~���O������ 1 �̂��̂��g���Ă��������B
 		virtual status SetStreamGray(uint tuner, ISDB isdb, uint  gray)       = 0;
 		virtual status GetStreamGray(uint tuner, ISDB isdb, uint *gray) const = 0;
 
-		// [機能] DMA 開始・停止の制御
-		// [説明] DMA 転送は全く CPU を介在することなく動作します。
-		//        GetTransferEnable() で true  が得られるときに SetTransferEnable(true ) としたり、
-		//        GetTransferEnable() で false が得られるときに SetTransferEnable(false) とするとエラーになります。
+		// [�@�\] DMA �J�n�E��~�̐���
+		// [����] DMA �]���͑S�� CPU ����݂��邱�ƂȂ����삵�܂��B
+		//        GetTransferEnable() �� true  ��������Ƃ��� SetTransferEnable(true ) �Ƃ�����A
+		//        GetTransferEnable() �� false ��������Ƃ��� SetTransferEnable(false) �Ƃ���ƃG���[�ɂȂ�܂��B
 		//        
-		//        GetTransferEnable() で取得できる値は、単に SetTransferEnable() で最後に設定された値と同じです。
-		//        転送カウンタが 0 になるなど、ハードウェア側で DMA 転送が自動的に停止する要因がいくつかありますが、
-		//        その場合でも GetTransferEnable() で得られる値は変わりません。
+		//        GetTransferEnable() �Ŏ擾�ł���l�́A�P�� SetTransferEnable() �ōŌ�ɐݒ肳�ꂽ�l�Ɠ����ł��B
+		//        �]���J�E���^�� 0 �ɂȂ�ȂǁA�n�[�h�E�F�A���� DMA �]���������I�ɒ�~����v��������������܂����A
+		//        ���̏ꍇ�ł� GetTransferEnable() �œ�����l�͕ς��܂���B
 		virtual status SetTransferEnable(bool  enable)       = 0;
 		virtual status GetTransferEnable(bool *enable) const = 0;
 
 		struct TransferInfo {
-			bool TransferCounter0;	// 転送カウンタが 0 であるのを検出した
-			bool TransferCounter1;	// 転送カウンタが 1 以下であるのを検出した
-			bool BufferOverflow;	// PCI バスを長期に渡り確保できなかったため、ボード上の FIFO(サイズ=8MB) が溢れた
-		};							// (これらのフラグは、一度でも条件成立を検出すると DMA 転送を再開するまでクリアされません)
+			bool TransferCounter0;	// �]���J�E���^�� 0 �ł���̂����o����
+			bool TransferCounter1;	// �]���J�E���^�� 1 �ȉ��ł���̂����o����
+			bool BufferOverflow;	// PCI �o�X�𒷊��ɓn��m�ۂł��Ȃ��������߁A�{�[�h��� FIFO(�T�C�Y=8MB) ����ꂽ
+		};							// (�����̃t���O�́A��x�ł��������������o����� DMA �]�����ĊJ����܂ŃN���A����܂���)
 
-		// [機能] DMA 状態の取得
+		// [�@�\] DMA ��Ԃ̎擾
 		virtual status GetTransferInfo(TransferInfo *) = 0;
 
-		// マイクロパケットの構造
+		// �}�C�N���p�P�b�g�̍\��
 		// +------------+----+----+----+----+----+----+----+----+----+----+----+
-		// | ビット位置 | 31 | 30 | 29 | 28 | 27 | 26 | 25 | 24 | 23 | .. |  0 |
+		// | �r�b�g�ʒu | 31 | 30 | 29 | 28 | 27 | 26 | 25 | 24 | 23 | .. |  0 |
 		// +------------+----+----+----+----+----+----+----+----+----+----+----+
-		// |    内容    |      id      |    counter   | st | er |     data     |
+		// |    ���e    |      id      |    counter   | st | er |     data     |
 		// +------------+--------------+--------------+----+----+--------------+
-		// id     : ストリームID
-		// counter: ストリームごとのカウンタ
-		// st     : TS パケット開始位置フラグ
-		// er     : エラーフラグ (TransferCounter0 と TransferCounter1 と BufferOverflow の論理和)
-		// data   : データ
+		// id     : �X�g���[��ID
+		// counter: �X�g���[�����Ƃ̃J�E���^
+		// st     : TS �p�P�b�g�J�n�ʒu�t���O
+		// er     : �G���[�t���O (TransferCounter0 �� TransferCounter1 �� BufferOverflow �̘_���a)
+		// data   : �f�[�^
 
-		// ストリームID
+		// �X�g���[��ID
 		// +----+------------------------+
-		// | id | 説明                   |
+		// | id | ����                   |
 		// +----+------------------------+
-		// |  0 | 禁止                   |
-		// |  1 | チューナー番号0 ISDB-S |
-		// |  2 | チューナー番号0 ISDB-T |
-		// |  3 | チューナー番号1 ISDB-S |
-		// |  4 | チューナー番号1 ISDB-T |
-		// |  5 | 予約                   |
-		// |  6 | 予約                   |
-		// |  7 | 予約                   |
+		// |  0 | �֎~                   |
+		// |  1 | �`���[�i�[�ԍ�0 ISDB-S |
+		// |  2 | �`���[�i�[�ԍ�0 ISDB-T |
+		// |  3 | �`���[�i�[�ԍ�1 ISDB-S |
+		// |  4 | �`���[�i�[�ԍ�1 ISDB-T |
+		// |  5 | �\��                   |
+		// |  6 | �\��                   |
+		// |  7 | �\��                   |
 		// +----+------------------------+
-		// ストリームID が 0 になることは絶対にありません。
-		// DMA 転送がどこまで進んでいるのかを調べるには、転送前に ストリームID を 0 に設定して、
-		// その箇所が 0 以外になったかどうかを調べます。
-		// 実用上は転送前に 4 バイトのマイクロパケット領域に 0 を書き込み、0 以外になったかどうかを調べることになります。
+		// �X�g���[��ID �� 0 �ɂȂ邱�Ƃ͐�΂ɂ���܂���B
+		// DMA �]�����ǂ��܂Ői��ł���̂��𒲂ׂ�ɂ́A�]���O�� �X�g���[��ID �� 0 �ɐݒ肵�āA
+		// ���̉ӏ��� 0 �ȊO�ɂȂ������ǂ����𒲂ׂ܂��B
+		// ���p��͓]���O�� 4 �o�C�g�̃}�C�N���p�P�b�g�̈�� 0 ���������݁A0 �ȊO�ɂȂ������ǂ����𒲂ׂ邱�ƂɂȂ�܂��B
 
-		// マイクロパケットから TS パケットを再構成する方法についてはサンプルコードをご参照ください。
-		// 次の関数を呼び出した直後に 188 バイトに満たないパケットが発生することがあり、切捨て処理が必要です。
-		// ・SetTunerSleep()
-		// ・SetFrequency()
-		// ・SetIdS()
-		// ・SetLayerEnable()
-		// ・SetStreamEnable()
-		// ・SetTransferEnable(true)
+		// �}�C�N���p�P�b�g���� TS �p�P�b�g���č\��������@�ɂ��Ă̓T���v���R�[�h�����Q�Ƃ��������B
+		// ���̊֐����Ăяo��������� 188 �o�C�g�ɖ����Ȃ��p�P�b�g���������邱�Ƃ�����A�؎̂ď������K�v�ł��B
+		// �ESetTunerSleep()
+		// �ESetFrequency()
+		// �ESetIdS()
+		// �ESetLayerEnable()
+		// �ESetStreamEnable()
+		// �ESetTransferEnable(true)
 
 	protected:
 		virtual ~Device() {}
 	};
 
 	enum Status {
-		// エラーなし
+		// �G���[�Ȃ�
 		STATUS_OK,
 
-		// 一般的なエラー
+		// ��ʓI�ȃG���[
 		STATUS_GENERAL_ERROR = (1)*0x100,
 		STATUS_NOT_IMPLIMENTED,
 		STATUS_INVALID_PARAM_ERROR,
 		STATUS_OUT_OF_MEMORY_ERROR,
 		STATUS_INTERNAL_ERROR,
 
-		// バスクラスのエラー
-		STATUS_WDAPI_LOAD_ERROR = (2)*256,	// wdapi1002.dll がロードできない
+		// �o�X�N���X�̃G���[
+		STATUS_WDAPI_LOAD_ERROR = (2)*256,	// wdapi1002.dll �����[�h�ł��Ȃ�
 		STATUS_ALL_DEVICES_MUST_BE_DELETED_ERROR,
 
-		// デバイスクラスのエラー
+		// �f�o�C�X�N���X�̃G���[
 		STATUS_PCI_BUS_ERROR = (3)*0x100,
 		STATUS_CONFIG_REVISION_ERROR,
 		STATUS_FPGA_VERSION_ERROR,
@@ -667,7 +667,7 @@ namespace PT {
 
 		STATUS_DEVICE_MUST_BE_CLOSED_ERROR,
 
-		// WinDriver 関連のエラー
+		// WinDriver �֘A�̃G���[
 		STATUS_WD_DriverName_ERROR = (4)*0x100,
 
 		STATUS_WD_Open_ERROR,
@@ -697,19 +697,19 @@ namespace PT {
 	};
 
 	// ------------------------------
-	// 特殊イベントにおける動作の詳細
+	// ����C�x���g�ɂ����铮��̏ڍ�
 	// ------------------------------
 
-	// 1. ボードの電源が投入されたときは、ハードウェアは以下の状態になります。
-	//    ・SetLnbPower(LNB_POWER_OFF)
-	//    ・SetTunerPowerReset(TUNER_POWER_OFF)
-	//    ・DMA 動作は停止
-	// 2. PCI リセットがアサートされたときも、電源投入時と同じ状態になります。
-	// 3. アプリケーションが異常終了した場合を含めデバイスをクローズするときは、以下の処理が順番に実行されます。
-	//    ・DMA 動作を停止
-	//    ・SetLnbPower([SetLnbPowerWhenClose() で指定された値])
-	//    ・SetTunerPowerReset(TUNER_POWER_OFF)
-	//    ・DMA バッファを解放
+	// 1. �{�[�h�̓d�����������ꂽ�Ƃ��́A�n�[�h�E�F�A�͈ȉ��̏�ԂɂȂ�܂��B
+	//    �ESetLnbPower(LNB_POWER_OFF)
+	//    �ESetTunerPowerReset(TUNER_POWER_OFF)
+	//    �EDMA ����͒�~
+	// 2. PCI ���Z�b�g���A�T�[�g���ꂽ�Ƃ����A�d���������Ɠ�����ԂɂȂ�܂��B
+	// 3. �A�v���P�[�V�������ُ�I�������ꍇ���܂߃f�o�C�X���N���[�Y����Ƃ��́A�ȉ��̏��������ԂɎ��s����܂��B
+	//    �EDMA ������~
+	//    �ESetLnbPower([SetLnbPowerWhenClose() �Ŏw�肳�ꂽ�l])
+	//    �ESetTunerPowerReset(TUNER_POWER_OFF)
+	//    �EDMA �o�b�t�@�����
 }
 }
 

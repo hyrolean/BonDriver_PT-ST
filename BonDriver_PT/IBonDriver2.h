@@ -1,4 +1,4 @@
-// IBonDriver2.h: IBonDriver2 繧ｯ繝ｩ繧ｹ縺ｮ繧､繝ｳ繧ｿ繝ｼ繝輔ぉ繧､繧ｹ
+// IBonDriver2.h: IBonDriver2 クラスのインターフェイス
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -13,7 +13,7 @@
 #include "IBonDriver.h"
 
 
-// 蜃｡繝峨Λ繧､繝舌う繝ｳ繧ｿ繝輔ぉ繝ｼ繧ｹ2
+// 凡ドライバインタフェース2
 class IBonDriver2 : public IBonDriver
 {
 public:

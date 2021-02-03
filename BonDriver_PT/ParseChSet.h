@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../Common/Util.h"
-#include "../../Common/StringUtil.h"
+#include "../Common/Util.h"
+#include "../Common/StringUtil.h"
 
 typedef struct _SPACE_DATA{
 	wstring wszName;
 	DWORD dwSpace;
-	//=ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãƒ¼ã®å‡¦ç†
+	//=ƒIƒyƒŒ[ƒ^[‚Ìˆ—
 	_SPACE_DATA(void){
 		wszName = L"";
 		dwSpace = 0;
@@ -26,7 +26,7 @@ typedef struct _CH_DATA{
 	DWORD dwCh;
 	DWORD dwPT1Ch;
 	DWORD dwTSID;
-	//=ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãƒ¼ã®å‡¦ç†
+	//=ƒIƒyƒŒ[ƒ^[‚Ìˆ—
 	_CH_DATA(void){
 		wszName = L"";
 		dwSpace = 0;
@@ -56,11 +56,11 @@ public:
 	CParseChSet(void);
 	~CParseChSet(void);
 
-	//ChSet.txtã®èª­ã¿è¾¼ã¿ã‚’è¡Œã†
-	//æˆ»ã‚Šå€¤ï¼š
-	// TRUEï¼ˆæˆåŠŸï¼‰ã€FALSEï¼ˆå¤±æ•—ï¼‰
-	//å¼•æ•°ï¼š
-	// file_path		[IN]ChSet.txtã®ãƒ•ãƒ«ãƒ‘ã‚¹
+	//ChSet.txt‚Ì“Ç‚İ‚İ‚ğs‚¤
+	//–ß‚è’lF
+	// TRUEi¬Œ÷jAFALSEi¸”sj
+	//ˆø”F
+	// file_path		[IN]ChSet.txt‚Ìƒtƒ‹ƒpƒX
 	BOOL ParseText(
 		LPCWSTR filePath
 		);

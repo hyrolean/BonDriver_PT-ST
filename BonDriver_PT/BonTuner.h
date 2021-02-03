@@ -1,4 +1,4 @@
-// BonTuner.h: CBonTuner ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
+// BonTuner.h: CBonTuner ƒNƒ‰ƒX‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒX
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -6,7 +6,7 @@
 
 
 #include "IBonDriver2.h"
-#include "../../Common/PT1SendCtrlCmdUtil.h"
+#include "../Common/PT1SendCtrlCmdUtil.h"
 #include "ParseChSet.h"
 
 #define BUFF_SIZE (188*256)
@@ -33,7 +33,7 @@ public:
 
 	void PurgeTsStream(void);
 
-// IBonDriver2(æš«å®š)
+// IBonDriver2(b’è)
 	LPCTSTR GetTunerName(void);
 
 	const BOOL IsTunerOpening(void);
