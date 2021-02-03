@@ -1,4 +1,4 @@
-// BonDriver_PT1.cpp : DLL ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒGƒ“ƒgƒŠ ƒ|ƒCƒ“ƒg‚ð’è‹`‚µ‚Ü‚·B
+// BonDriver_PT1.cpp : DLL ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¨ãƒ³ãƒˆãƒª ãƒã‚¤ãƒ³ãƒˆã‚’å®šç¾©ã—ã¾ã™ã€‚
 //
 
 #include "stdafx.h"
@@ -15,12 +15,12 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 {
     switch(ul_reason_for_call){
 		case DLL_PROCESS_ATTACH:
-			// ƒ‚ƒWƒ…[ƒ‹ƒnƒ“ƒhƒ‹•Û‘¶
+			// ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒãƒ³ãƒ‰ãƒ«ä¿å­˜
 			CBonTuner::m_hModule = hModule;
 			break;
 	
 		case DLL_PROCESS_DETACH:
-			// –¢ŠJ•ú‚Ìê‡‚ÍƒCƒ“ƒXƒ^ƒ“ƒXŠJ•ú		
+			// æœªé–‹æ”¾ã®å ´åˆã¯ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹é–‹æ”¾		
 			if(CBonTuner::m_pThis)CBonTuner::m_pThis->Release();
 			break;
 	}  
