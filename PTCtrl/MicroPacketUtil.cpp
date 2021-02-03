@@ -17,30 +17,30 @@ BOOL CMicroPacketUtil::MicroPacket(BYTE* pbPacket)
 	uint packetCounter = BIT_SHIFT_MASK(pbPacket[3], 2,  3);
 	uint packetStart   = BIT_SHIFT_MASK(pbPacket[3], 1,  1);
 
-	// ƒJƒEƒ“ƒ^’l‚ðŠm”F
+	// ã‚«ã‚¦ãƒ³ã‚¿å€¤ã‚’ç¢ºèª
 	uint count = BIT_SHIFT_MASK(mCount, 0, 3);
 	mCount++;
 
 	if (packetCounter != count) {
-		OutputDebugString(L"ƒJƒEƒ“ƒ^’l‚ªˆÙí‚Å‚·B\n");
+		OutputDebugString(L"ã‚«ã‚¦ãƒ³ã‚¿å€¤ãŒç•°å¸¸ã§ã™ã€‚\n");
 		Reset();
 		return FALSE;
 	}
 
-	// ƒpƒPƒbƒgŠJŽnˆÊ’uƒtƒ‰ƒO‚ðŠm”F
+	// ãƒ‘ã‚±ãƒƒãƒˆé–‹å§‹ä½ç½®ãƒ•ãƒ©ã‚°ã‚’ç¢ºèª
 	if (packetStart) {
-		// “¯ŠúƒoƒCƒg‚ðŠm”F
+		// åŒæœŸãƒã‚¤ãƒˆã‚’ç¢ºèª
 		if (pbPacket[2] != 0x47) {
-			OutputDebugString(L"ƒpƒPƒbƒg‚Ìæ“ªƒoƒCƒg‚ª 0x47 ‚É‚È‚Á‚Ä‚¢‚Ü‚¹‚ñB\n");
+			OutputDebugString(L"ãƒ‘ã‚±ãƒƒãƒˆã®å…ˆé ­ãƒã‚¤ãƒˆãŒ 0x47 ã«ãªã£ã¦ã„ã¾ã›ã‚“ã€‚\n");
 		}
 
 		if (mPacketOffset != 0) {
-			OutputDebugString(L"‘O‚ÌƒpƒPƒbƒg‚ªŠ®—¹‚µ‚Ü‚¹‚ñ‚Å‚µ‚½B\n");
+			OutputDebugString(L"å‰ã®ãƒ‘ã‚±ãƒƒãƒˆãŒå®Œäº†ã—ã¾ã›ã‚“ã§ã—ãŸã€‚\n");
 		}
 		mPacketOffset = 0;
 	}
 
-	// ƒf[ƒ^‚ðƒRƒs[
+	// ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼
 	for (int i=2; i>=0; i--) {
 		if (mPacketOffset < 188) {
 			m_b1TS[mPacketOffset] = pbPacket[i];
@@ -49,7 +49,7 @@ BOOL CMicroPacketUtil::MicroPacket(BYTE* pbPacket)
 	}
 
 	if (188 <= mPacketOffset) {
-		// ‚Ð‚Æ‚Â‚ÌƒpƒPƒbƒg‚ªŠ®¬
+		// ã²ã¨ã¤ã®ãƒ‘ã‚±ãƒƒãƒˆãŒå®Œæˆ
 		mPacketOffset = 0;
 		bRet = TRUE;
 	}
