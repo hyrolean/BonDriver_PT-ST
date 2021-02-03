@@ -1,4 +1,4 @@
-// BonTuner.h: CBonTuner ƒNƒ‰ƒX‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒX
+// BonTuner.h: CBonTuner ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -33,7 +33,7 @@ public:
 
 	void PurgeTsStream(void);
 
-// IBonDriver2(b’è)
+// IBonDriver2(æš«å®š)
 	LPCTSTR GetTunerName(void);
 
 	const BOOL IsTunerOpening(void);
