@@ -16,8 +16,8 @@ static BOOL isISDB_S;
 #pragma warning( disable : 4273 )
 extern "C" __declspec(dllexport) IBonDriver * CreateBonDriver()
 {
-	// “¯ˆêƒvƒƒZƒX‚©‚ç‚Ì•¡”ƒCƒ“ƒXƒ^ƒ“ƒXŽæ“¾‹ÖŽ~
-	// (”ñ“¯Šú‚ÅŽæ“¾‚³‚ê‚½ê‡‚Ì”r‘¼ˆ—‚ª‚¿‚á‚ñ‚Æo—ˆ‚Ä‚¢‚È‚¢‚ª•ú’u)
+	// åŒä¸€ãƒ—ãƒ­ã‚»ã‚¹ã‹ã‚‰ã®è¤‡æ•°ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—ç¦æ­¢
+	// (éžåŒæœŸã§å–å¾—ã•ã‚ŒãŸå ´åˆã®æŽ’ä»–å‡¦ç†ãŒã¡ã‚ƒã‚“ã¨å‡ºæ¥ã¦ã„ãªã„ãŒæ”¾ç½®)
 	CBonTuner *p = NULL;
 	if (CBonTuner::m_pThis == NULL) {
 		p = new CBonTuner;
@@ -50,7 +50,7 @@ CBonTuner::CBonTuner()
 	WCHAR strExePath[512] = L"";
 	GetModuleFileName(m_hModule, strExePath, 512);
 
-	WCHAR szPath[_MAX_PATH];	// ƒpƒX
+	WCHAR szPath[_MAX_PATH];	// ãƒ‘ã‚¹
 	WCHAR szDrive[_MAX_DRIVE];
 	WCHAR szDir[_MAX_DIR];
 	WCHAR szFname[_MAX_FNAME];
@@ -101,7 +101,7 @@ CBonTuner::CBonTuner()
 
 	wstring strChSet;
 
-	//dll–¼‚Æ“¯‚¶–¼‘O‚Ì.ChSet.txt‚ðæ‚É—Dæ‚µ‚Ä“Ç‚Ýž‚Ý‚ðŽŽs‚·‚é
+	//dllåã¨åŒã˜åå‰ã®.ChSet.txtã‚’å…ˆã«å„ªå…ˆã—ã¦èª­ã¿è¾¼ã¿ã‚’è©¦è¡Œã™ã‚‹
 	//(fixed by 2020 LVhJPic0JSk5LiQ1ITskKVk9UGBg)
 	strChSet = szPath;	strChSet += szFname;	strChSet += L".ChSet.txt";
 	if(!m_chSet.ParseText(strChSet.c_str())) {
@@ -132,7 +132,7 @@ CBonTuner::~CBonTuner()
 
 const BOOL CBonTuner::OpenTuner(void)
 {
-	//ƒCƒxƒ“ƒg
+	//ã‚¤ãƒ™ãƒ³ãƒˆ
 	m_hOnStreamEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);
 
 	PROCESS_INFORMATION pi;
@@ -167,7 +167,7 @@ void CBonTuner::CloseTuner(void)
 {
 	if( m_hThread != NULL ){
 		::SetEvent(m_hStopEvent);
-		// ƒXƒŒƒbƒhI—¹‘Ò‚¿
+		// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†å¾…ã¡
 		if ( ::WaitForSingleObject(m_hThread, 15000) == WAIT_TIMEOUT ){
 			::TerminateThread(m_hThread, 0xffffffff);
 		}
@@ -187,7 +187,7 @@ void CBonTuner::CloseTuner(void)
 		m_iID = -1;
 	}
 
-	//ƒoƒbƒtƒ@‰ð•ú
+	//ãƒãƒƒãƒ•ã‚¡è§£æ”¾
 	::EnterCriticalSection(&m_CriticalSection);
 	while (!m_TsBuff.empty()){
 		TS_DATA *p = m_TsBuff.front();
@@ -220,22 +220,22 @@ const DWORD CBonTuner::WaitTsStream(const DWORD dwTimeOut)
 	if( m_hOnStreamEvent == NULL ){
 		return WAIT_ABANDONED;
 	}
-	// ƒCƒxƒ“ƒg‚ªƒVƒOƒiƒ‹ó‘Ô‚É‚È‚é‚Ì‚ð‘Ò‚Â
+	// ã‚¤ãƒ™ãƒ³ãƒˆãŒã‚·ã‚°ãƒŠãƒ«çŠ¶æ…‹ã«ãªã‚‹ã®ã‚’å¾…ã¤
 	const DWORD dwRet = ::WaitForSingleObject(m_hOnStreamEvent, (dwTimeOut)? dwTimeOut : INFINITE);
 
 	switch(dwRet){
 		case WAIT_ABANDONED :
-			// ƒ`ƒ…[ƒi‚ª•Â‚¶‚ç‚ê‚½
+			// ãƒãƒ¥ãƒ¼ãƒŠãŒé–‰ã˜ã‚‰ã‚ŒãŸ
 			return WAIT_ABANDONED;
 
 		case WAIT_OBJECT_0 :
 		case WAIT_TIMEOUT :
-			// ƒXƒgƒŠ[ƒ€Žæ“¾‰Â”\
+			// ã‚¹ãƒˆãƒªãƒ¼ãƒ å–å¾—å¯èƒ½
 			return dwRet;
 
 		case WAIT_FAILED :
 		default:
-			// —áŠO
+			// ä¾‹å¤–
 			return WAIT_FAILED;
 	}
 }
@@ -286,7 +286,7 @@ const BOOL CBonTuner::GetTsStream(BYTE **ppDst, DWORD *pdwSize, DWORD *pdwRemain
 
 void CBonTuner::PurgeTsStream(void)
 {
-	//ƒoƒbƒtƒ@‰ð•ú
+	//ãƒãƒƒãƒ•ã‚¡è§£æ”¾
 	::EnterCriticalSection(&m_CriticalSection);
 	while (!m_TsBuff.empty()){
 		TS_DATA *p = m_TsBuff.front();
@@ -387,7 +387,7 @@ UINT WINAPI CBonTuner::RecvThread(LPVOID pParam)
 
 	while (1) {
 		if (::WaitForSingleObject( pSys->m_hStopEvent, 0 ) != WAIT_TIMEOUT) {
-			//’†Ž~
+			//ä¸­æ­¢
 			break;
 		}
 		DWORD dwSize;
@@ -405,7 +405,7 @@ UINT WINAPI CBonTuner::RecvThread(LPVOID pParam)
 				::LeaveCriticalSection(&pSys->m_CriticalSection);
 				::SetEvent(pSys->m_hOnStreamEvent);
 			}else {
-				//‹xŽ~
+				//ä¼‘æ­¢
 				delete [] pbBuff ;
 			}
 		}else{
