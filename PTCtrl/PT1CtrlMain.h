@@ -24,7 +24,7 @@ protected:
 protected:
 	static int CALLBACK OutsideCmdCallback(void* pParam, CMD_STREAM* pCmdParam, CMD_STREAM* pResParam);
 
-	//CMD_CLOSE_EXE PT1Ctrl.exe‚Ì‹­§I—¹ƒRƒ}ƒ“ƒh ’Êí‚Íg—p‚µ‚È‚¢
+	//CMD_CLOSE_EXE PT1Ctrl.exeã®å¼·åˆ¶çµ‚äº†ã‚³ãƒãƒ³ãƒ‰ é€šå¸¸ã¯ä½¿ç”¨ã—ãªã„
 	void CmdCloseExe(CMD_STREAM* pCmdParam, CMD_STREAM* pResParam);
 	//CMD_OPEN_TUNER OpenTuner
 	void CmdOpenTuner(CMD_STREAM* pCmdParam, CMD_STREAM* pResParam);
