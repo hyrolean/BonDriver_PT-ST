@@ -6,7 +6,7 @@
 typedef struct _SPACE_DATA{
 	wstring wszName;
 	DWORD dwSpace;
-	//=�I�y���[�^�[�̏���
+	//=オペレーターの処理
 	_SPACE_DATA(void){
 		wszName = L"";
 		dwSpace = 0;
@@ -26,7 +26,7 @@ typedef struct _CH_DATA{
 	DWORD dwCh;
 	DWORD dwPT1Ch;
 	DWORD dwTSID;
-	//=�I�y���[�^�[�̏���
+	//=オペレーターの処理
 	_CH_DATA(void){
 		wszName = L"";
 		dwSpace = 0;
@@ -56,11 +56,11 @@ public:
 	CParseChSet(void);
 	~CParseChSet(void);
 
-	//ChSet.txt�̓ǂݍ��݂��s��
-	//�߂�l�F
-	// TRUE�i�����j�AFALSE�i���s�j
-	//�����F
-	// file_path		[IN]ChSet.txt�̃t���p�X
+	//ChSet.txtの読み込みを行う
+	//戻り値：
+	// TRUE（成功）、FALSE（失敗）
+	//引数：
+	// file_path		[IN]ChSet.txtのフルパス
 	BOOL ParseText(
 		LPCWSTR filePath
 		);
