@@ -20,7 +20,7 @@ void CPT1CtrlMain::StartMain(BOOL bService)
 {
 	BOOL bInit = TRUE;
 	if( m_cPT1.LoadSDK() == FALSE ){
-		OutputDebugString(L"PT SDK‚Ìƒ[ƒh‚É¸”s");
+		OutputDebugString(L"PT SDKã®ãƒ­ãƒ¼ãƒ‰ã«å¤±æ•—");
 		bInit = FALSE;
 	}
 	if( bInit == TRUE ){
@@ -28,7 +28,7 @@ void CPT1CtrlMain::StartMain(BOOL bService)
 	}
 	m_bService = bService;
 
-	//PipeƒT[ƒo[ƒXƒ^[ƒg
+	//Pipeã‚µãƒ¼ãƒãƒ¼ã‚¹ã‚¿ãƒ¼ãƒˆ
 	CPipeServer cPipeserver;
 	cPipeserver.StartServer(CMD_PT1_CTRL_EVENT_WAIT_CONNECT, CMD_PT1_CTRL_PIPE, OutsideCmdCallback, this);
 
@@ -36,7 +36,7 @@ void CPT1CtrlMain::StartMain(BOOL bService)
 		if( WaitForSingleObject(m_hStopEvent, 15*1000) != WAIT_TIMEOUT ){
 			break;
 		}else{
-			//ƒAƒvƒŠ‘w€‚ñ‚¾—p‚Ìƒ`ƒFƒbƒN
+			//ã‚¢ãƒ—ãƒªå±¤æ­»ã‚“ã æ™‚ç”¨ã®ãƒã‚§ãƒƒã‚¯
 			if( m_cPT1.CloseChk() == FALSE && m_bService == FALSE){
 				break;
 			}
@@ -87,7 +87,7 @@ int CALLBACK CPT1CtrlMain::OutsideCmdCallback(void* pParam, CMD_STREAM* pCmdPara
 	return 0;
 }
 
-//CMD_CLOSE_EXE PT1Ctrl.exe‚ÌI—¹
+//CMD_CLOSE_EXE PT1Ctrl.exeã®çµ‚äº†
 void CPT1CtrlMain::CmdCloseExe(CMD_STREAM* pCmdParam, CMD_STREAM* pResParam)
 {
 	pResParam->dwParam = CMD_SUCCESS;
@@ -118,7 +118,7 @@ void CPT1CtrlMain::CmdCloseTuner(CMD_STREAM* pCmdParam, CMD_STREAM* pResParam)
 	if (m_bService == FALSE) {
 		HANDLE h = _CreateMutex(TRUE, PT1_GLOBAL_LOCK_MUTEX);
 		if (m_cPT1.IsFindOpen() == FALSE) {
-			// ¡‚©‚çI—¹‚·‚é‚Ì‚Å–â‘è‚ª–³‚­‚È‚éƒ^ƒCƒ~ƒ“ƒO‚Ü‚Å•ÊƒvƒƒZƒX‚ÌŠJn‚ğ—}§
+			// ä»Šã‹ã‚‰çµ‚äº†ã™ã‚‹ã®ã§å•é¡ŒãŒç„¡ããªã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã¾ã§åˆ¥ãƒ—ãƒ­ã‚»ã‚¹ã®é–‹å§‹ã‚’æŠ‘åˆ¶
 			ResetEvent(g_hStartEnableEvent);
 			StopMain();
 		}
