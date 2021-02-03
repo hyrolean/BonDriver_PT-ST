@@ -55,18 +55,18 @@ BOOL CParseChSet::ParseText(LPCWSTR filePath)
 			//strRead.erase( 0, iIndex+2 );
 			iIndex = iFind + 2;
 		}
-		//æ“ªG‚ÍƒRƒƒ“ƒgs
+		//å…ˆé ­ï¼›ã¯ã‚³ãƒ¡ãƒ³ãƒˆè¡Œ
 		if( parseLine.find(";") != 0 ){
-			//‹ósH
+			//ç©ºè¡Œï¼Ÿ
 			if( parseLine.find("\t") != string::npos ){
 				if( parseLine.find("$") == 0 ){
-					//ƒ`ƒ…[ƒi[‹óŠÔ
+					//ãƒãƒ¥ãƒ¼ãƒŠãƒ¼ç©ºé–“
 					SPACE_DATA item;
 					if( Parse1Line(parseLine, &item) == TRUE ){
 						this->spaceMap.insert( pair<DWORD, SPACE_DATA>(item.dwSpace,item) );
 					}
 				}else{
-					//ƒ`ƒƒƒ“ƒlƒ‹
+					//ãƒãƒ£ãƒ³ãƒãƒ«
 					CH_DATA item;
 					if( Parse1Line(parseLine, &item) == TRUE ){
 						DWORD iKey = (item.dwSpace<<16) | item.dwCh;
@@ -90,7 +90,7 @@ BOOL CParseChSet::Parse1Line(string parseLine, SPACE_DATA* info )
 
 	Separate( parseLine, "\t", strBuff, parseLine);
 
-	//Ch–¼
+	//Chå
 	AtoW(strBuff, info->wszName);
 
 	Separate( parseLine, "\t", strBuff, parseLine);
@@ -130,7 +130,7 @@ BOOL CParseChSet::Parse1Line(string parseLine, CH_DATA* chInfo )
 
 	Separate( parseLine, "\t", strBuff, parseLine);
 
-	//Ch–¼
+	//Chå
 	AtoW(strBuff, chInfo->wszName);
 
 	Separate( parseLine, "\t", strBuff, parseLine);
@@ -145,8 +145,8 @@ BOOL CParseChSet::Parse1Line(string parseLine, CH_DATA* chInfo )
 
 	Separate( parseLine, "\t", strBuff, parseLine);
 
-	//PTx‚Ìƒ`ƒƒƒ“ƒlƒ‹
-	//ch+-offset‚Åü”g”ƒIƒtƒZƒbƒg‰Â‚É
+	//PTxã®ãƒãƒ£ãƒ³ãƒãƒ«
+	//ch+-offsetã§å‘¨æ³¢æ•°ã‚ªãƒ•ã‚»ãƒƒãƒˆå¯ã«
     //(fixed by 2020 LVhJPic0JSk5LiQ1ITskKVk9UGBg)
 	chInfo->dwPT1Ch = ParsePT1Ch(strBuff);
 
