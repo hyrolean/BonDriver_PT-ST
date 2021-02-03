@@ -62,7 +62,7 @@ CDataIO::~CDataIO(void)
 {
 	if( m_hThread != NULL ){
 		::SetEvent(m_hStopEvent);
-		// ƒXƒŒƒbƒhI—¹‘Ò‚¿
+		// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†å¾…ã¡
 		if ( ::WaitForSingleObject(m_hThread, 15000) == WAIT_TIMEOUT ){
 			::TerminateThread(m_hThread, 0xffffffff);
 		}
@@ -328,7 +328,7 @@ void CDataIO::Run()
 		m_bDMABuff = new BYTE[READ_BLOCK_SIZE];
 	}
 
-	// DMA “]‘—‚ª‚Ç‚±‚Ü‚Åi‚ñ‚¾‚©‚ğ’²‚×‚é‚½‚ßAŠeƒuƒƒbƒN‚Ì––”ö‚ğ 0 ‚ÅƒNƒŠƒA‚·‚é
+	// DMA è»¢é€ãŒã©ã“ã¾ã§é€²ã‚“ã ã‹ã‚’èª¿ã¹ã‚‹ãŸã‚ã€å„ãƒ–ãƒ­ãƒƒã‚¯ã®æœ«å°¾ã‚’ 0 ã§ã‚¯ãƒªã‚¢ã™ã‚‹
 	for (uint i=0; i<VIRTUAL_COUNT; i++) {
 		for (uint j=0; j<VIRTUAL_IMAGE_COUNT; j++) {
 			for (uint k=0; k<READ_BLOCK_COUNT; k++) {
@@ -337,13 +337,13 @@ void CDataIO::Run()
 		}
 	}
 
-	// “]‘—ƒJƒEƒ“ƒ^‚ğƒŠƒZƒbƒg‚·‚é
+	// è»¢é€ã‚«ã‚¦ãƒ³ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
 	enStatus = m_pcDevice->ResetTransferCounter();
 	if( enStatus != PT::STATUS_OK ){
 		return ;
 	}
 
-	// “]‘—ƒJƒEƒ“ƒ^‚ğƒCƒ“ƒNƒŠƒƒ“ƒg‚·‚é
+	// è»¢é€ã‚«ã‚¦ãƒ³ã‚¿ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã™ã‚‹
 	for (uint i=0; i<VIRTUAL_IMAGE_COUNT*VIRTUAL_COUNT; i++) {
 		enStatus = m_pcDevice->IncrementTransferCounter();
 		if( enStatus != PT::STATUS_OK ){
@@ -352,7 +352,7 @@ void CDataIO::Run()
 
 	}
 
-	// DMA “]‘—‚ğ‹–‰Â‚·‚é
+	// DMA è»¢é€ã‚’è¨±å¯ã™ã‚‹
 	enStatus = m_pcDevice->SetTransferEnable(true);
 	if( enStatus != PT::STATUS_OK ){
 		return ;
@@ -385,7 +385,7 @@ void CDataIO::ResetDMA()
 	mImageIndex=0;
 	mBlockIndex=0;
 
-	// DMA “]‘—‚ª‚Ç‚±‚Ü‚Åi‚ñ‚¾‚©‚ğ’²‚×‚é‚½‚ßAŠeƒuƒƒbƒN‚Ì––”ö‚ğ 0 ‚ÅƒNƒŠƒA‚·‚é
+	// DMA è»¢é€ãŒã©ã“ã¾ã§é€²ã‚“ã ã‹ã‚’èª¿ã¹ã‚‹ãŸã‚ã€å„ãƒ–ãƒ­ãƒƒã‚¯ã®æœ«å°¾ã‚’ 0 ã§ã‚¯ãƒªã‚¢ã™ã‚‹
 	for (uint i=0; i<VIRTUAL_COUNT; i++) {
 		for (uint j=0; j<VIRTUAL_IMAGE_COUNT; j++) {
 			for (uint k=0; k<READ_BLOCK_COUNT; k++) {
@@ -394,13 +394,13 @@ void CDataIO::ResetDMA()
 		}
 	}
 
-	// “]‘—ƒJƒEƒ“ƒ^‚ğƒŠƒZƒbƒg‚·‚é
+	// è»¢é€ã‚«ã‚¦ãƒ³ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
 	enStatus = m_pcDevice->ResetTransferCounter();
 	if( enStatus != PT::STATUS_OK ){
 		return ;
 	}
 
-	// “]‘—ƒJƒEƒ“ƒ^‚ğƒCƒ“ƒNƒŠƒƒ“ƒg‚·‚é
+	// è»¢é€ã‚«ã‚¦ãƒ³ã‚¿ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã™ã‚‹
 	for (uint i=0; i<VIRTUAL_IMAGE_COUNT*VIRTUAL_COUNT; i++) {
 		enStatus = m_pcDevice->IncrementTransferCounter();
 		if( enStatus != PT::STATUS_OK ){
@@ -409,7 +409,7 @@ void CDataIO::ResetDMA()
 
 	}
 
-	// DMA “]‘—‚ğ‹–‰Â‚·‚é
+	// DMA è»¢é€ã‚’è¨±å¯ã™ã‚‹
 	enStatus = m_pcDevice->SetTransferEnable(true);
 	if( enStatus != PT::STATUS_OK ){
 		return ;
@@ -421,7 +421,7 @@ void CDataIO::Stop()
 	if( m_hThread != NULL ){
 		mQuit = true;
 		::SetEvent(m_hStopEvent);
-		// ƒXƒŒƒbƒhI—¹‘Ò‚¿
+		// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†å¾…ã¡
 		if ( ::WaitForSingleObject(m_hThread, 15000) == WAIT_TIMEOUT ){
 			::TerminateThread(m_hThread, 0xffffffff);
 		}
@@ -629,7 +629,7 @@ UINT WINAPI CDataIO::RecvThread(LPVOID pParam)
 	return 0;
 }
 
-// 1ƒuƒƒbƒN•ª DMA “]‘—‚ªI‚í‚é‚© mQuit ‚ª true ‚É‚È‚é‚Ü‚Å‘Ò‚Â
+// 1ãƒ–ãƒ­ãƒƒã‚¯åˆ† DMA è»¢é€ãŒçµ‚ã‚ã‚‹ã‹ mQuit ãŒ true ã«ãªã‚‹ã¾ã§å¾…ã¤
 bool CDataIO::WaitBlock()
 {
 	bool b = true;
@@ -640,17 +640,17 @@ bool CDataIO::WaitBlock()
 			break;
 		}
 
-		// ƒuƒƒbƒN‚Ì––”ö‚ª 0 ‚Å‚È‚¯‚ê‚ÎA‚»‚ÌƒuƒƒbƒN‚Ì DMA “]‘—‚ªŠ®—¹‚µ‚½‚±‚Æ‚É‚È‚é
+		// ãƒ–ãƒ­ãƒƒã‚¯ã®æœ«å°¾ãŒ 0 ã§ãªã‘ã‚Œã°ã€ãã®ãƒ–ãƒ­ãƒƒã‚¯ã® DMA è»¢é€ãŒå®Œäº†ã—ãŸã“ã¨ã«ãªã‚‹
 		if (Read(mVirtualIndex, mImageIndex, mBlockIndex) != 0) break;
 		Sleep(3);
 	}
-	//::wprintf(L"(mVirtualIndex, mImageIndex, mBlockIndex) = (%d, %d, %d) ‚Ì“]‘—‚ªI‚í‚è‚Ü‚µ‚½B\n", mVirtualIndex, mImageIndex, mBlockIndex);
+	//::wprintf(L"(mVirtualIndex, mImageIndex, mBlockIndex) = (%d, %d, %d) ã®è»¢é€ãŒçµ‚ã‚ã‚Šã¾ã—ãŸã€‚\n", mVirtualIndex, mImageIndex, mBlockIndex);
 
 	return b;
 }
 
-// 1ƒuƒƒbƒN•ª‚Ìƒf[ƒ^‚ğƒeƒ“ƒ|ƒ‰ƒŠ—Ìˆæ‚ÉƒRƒs[‚·‚éBCPU ‘¤‚©‚çŒ©‚Ä DMA ƒoƒbƒtƒ@‚ÍƒLƒƒƒbƒVƒ…‚ªŒø‚©‚È‚¢‚½‚ßA
-// ƒLƒƒƒbƒVƒ…‚ªŒø‚­ƒƒ‚ƒŠ—Ìˆæ‚ÉƒRƒs[‚µ‚Ä‚©‚çƒAƒNƒZƒX‚·‚é‚ÆŒø—¦‚ª‚‚Ü‚è‚Ü‚·B
+// 1ãƒ–ãƒ­ãƒƒã‚¯åˆ†ã®ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ†ãƒ³ãƒãƒ©ãƒªé ˜åŸŸã«ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚CPU å´ã‹ã‚‰è¦‹ã¦ DMA ãƒãƒƒãƒ•ã‚¡ã¯ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒåŠ¹ã‹ãªã„ãŸã‚ã€
+// ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒåŠ¹ããƒ¡ãƒ¢ãƒªé ˜åŸŸã«ã‚³ãƒ”ãƒ¼ã—ã¦ã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹ã¨åŠ¹ç‡ãŒé«˜ã¾ã‚Šã¾ã™ã€‚
 void CDataIO::CopyBlock()
 {
 	status enStatus;
@@ -664,14 +664,14 @@ void CDataIO::CopyBlock()
 
 	memcpy(m_bDMABuff, (BYTE*)voidPtr+dwOffset, READ_BLOCK_SIZE);
 
-	// ƒRƒs[‚µI‚í‚Á‚½‚Ì‚ÅAƒuƒƒbƒN‚Ì––”ö‚ğ 0 ‚É‚µ‚Ü‚·B
+	// ã‚³ãƒ”ãƒ¼ã—çµ‚ã‚ã£ãŸã®ã§ã€ãƒ–ãƒ­ãƒƒã‚¯ã®æœ«å°¾ã‚’ 0 ã«ã—ã¾ã™ã€‚
 	uint *ptr = static_cast<uint *>(voidPtr);
 	ptr[Offset(mImageIndex, mBlockIndex, READ_BLOCK_SIZE)-1] = 0;
 
 	if (READ_BLOCK_COUNT <= ++mBlockIndex) {
 		mBlockIndex = 0;
 
-		// “]‘—ƒJƒEƒ“ƒ^‚Í OS::Memory::PAGE_SIZE * PT::Device::BUFFER_PAGE_COUNT ƒoƒCƒg‚²‚Æ‚ÉƒCƒ“ƒNƒŠƒƒ“ƒg‚µ‚Ü‚·B
+		// è»¢é€ã‚«ã‚¦ãƒ³ã‚¿ã¯ OS::Memory::PAGE_SIZE * PT::Device::BUFFER_PAGE_COUNT ãƒã‚¤ãƒˆã”ã¨ã«ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã—ã¾ã™ã€‚
 		enStatus = m_pcDevice->IncrementTransferCounter();
 		if( enStatus != PT::STATUS_OK ){
 			return ;
@@ -725,24 +725,24 @@ bool CDataIO::DispatchBlock()
 		uint packetError = BIT_SHIFT_MASK(m_bDMABuff[i+3], 0, 1);
 
 		if (packetError) {
-			// ƒGƒ‰[‚ÌŒ´ˆö‚ğ’²‚×‚é
+			// ã‚¨ãƒ©ãƒ¼ã®åŸå› ã‚’èª¿ã¹ã‚‹
 			PT::Device::TransferInfo info;
 			status enStatus = m_pcDevice->GetTransferInfo(&info);
 			if( enStatus == PT::STATUS_OK ){
 				if (info.TransferCounter0) {
-					OutputDebugString(L"š“]‘—ƒJƒEƒ“ƒ^‚ª 0 ‚Å‚ ‚é‚Ì‚ğŒŸo‚µ‚½B");
+					OutputDebugString(L"â˜…è»¢é€ã‚«ã‚¦ãƒ³ã‚¿ãŒ 0 ã§ã‚ã‚‹ã®ã‚’æ¤œå‡ºã—ãŸã€‚");
 					ResetDMA();
 					break;
 				} else if (info.TransferCounter1) {
-					OutputDebugString(L"š“]‘—ƒJƒEƒ“ƒ^‚ª 1 ˆÈ‰º‚É‚È‚è‚Ü‚µ‚½B");
+					OutputDebugString(L"â˜…è»¢é€ã‚«ã‚¦ãƒ³ã‚¿ãŒ 1 ä»¥ä¸‹ã«ãªã‚Šã¾ã—ãŸã€‚");
 					ResetDMA();
 					break;
 				} else if (info.BufferOverflow) {
-					OutputDebugString(L"šPCI ƒoƒX‚ğ’·Šú‚É“n‚èŠm•Û‚Å‚«‚È‚©‚Á‚½‚½‚ßAƒ{[ƒhã‚Ì FIFO ‚ªˆì‚ê‚Ü‚µ‚½B");
+					OutputDebugString(L"â˜…PCI ãƒã‚¹ã‚’é•·æœŸã«æ¸¡ã‚Šç¢ºä¿ã§ããªã‹ã£ãŸãŸã‚ã€ãƒœãƒ¼ãƒ‰ä¸Šã® FIFO ãŒæº¢ã‚Œã¾ã—ãŸã€‚");
 					ResetDMA();
 					break;
 				} else {
-					OutputDebugString(L"š“]‘—ƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B");
+					OutputDebugString(L"â˜…è»¢é€ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚");
 					break;
 				}
 			}else{
@@ -1013,7 +1013,7 @@ void CDataIO::CmdSendData(DWORD dwID, CMD_STREAM* pCmdParam, CMD_STREAM* pResPar
 				m_T0Buff.pop_front();
 				pResParam->dwSize = p->dwSize;
 				pResParam->bData = p->pbBuff;
-				p->pbBuff = NULL;	// ƒ|ƒCƒ“ƒ^‚ğƒRƒs[‚µ‚Ä‚é‚Ì‚Ådelete p‚Åíœ‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+				p->pbBuff = NULL;	// ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ã‚‹ã®ã§delete pã§å‰Šé™¤ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 				delete p;
 #endif
 				bSend = TRUE;
@@ -1034,7 +1034,7 @@ void CDataIO::CmdSendData(DWORD dwID, CMD_STREAM* pCmdParam, CMD_STREAM* pResPar
 				m_T1Buff.pop_front();
 				pResParam->dwSize = p->dwSize;
 				pResParam->bData = p->pbBuff;
-				p->pbBuff = NULL;	// ƒ|ƒCƒ“ƒ^‚ğƒRƒs[‚µ‚Ä‚é‚Ì‚Ådelete p‚Åíœ‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+				p->pbBuff = NULL;	// ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ã‚‹ã®ã§delete pã§å‰Šé™¤ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 				delete p;
 #endif
 				bSend = TRUE;
@@ -1055,7 +1055,7 @@ void CDataIO::CmdSendData(DWORD dwID, CMD_STREAM* pCmdParam, CMD_STREAM* pResPar
 				m_S0Buff.pop_front();
 				pResParam->dwSize = p->dwSize;
 				pResParam->bData = p->pbBuff;
-				p->pbBuff = NULL;	// ƒ|ƒCƒ“ƒ^‚ğƒRƒs[‚µ‚Ä‚é‚Ì‚Ådelete p‚Åíœ‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+				p->pbBuff = NULL;	// ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ã‚‹ã®ã§delete pã§å‰Šé™¤ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 				delete p;
 #endif
 				bSend = TRUE;
@@ -1076,7 +1076,7 @@ void CDataIO::CmdSendData(DWORD dwID, CMD_STREAM* pCmdParam, CMD_STREAM* pResPar
 				m_S1Buff.pop_front();
 				pResParam->dwSize = p->dwSize;
 				pResParam->bData = p->pbBuff;
-				p->pbBuff = NULL;	// ƒ|ƒCƒ“ƒ^‚ğƒRƒs[‚µ‚Ä‚é‚Ì‚Ådelete p‚Åíœ‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+				p->pbBuff = NULL;	// ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ã‚‹ã®ã§delete pã§å‰Šé™¤ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 				delete p;
 #endif
 				bSend = TRUE;
