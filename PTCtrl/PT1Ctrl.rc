@@ -15,7 +15,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// ì˙ñ{åÍ resources
+// Êó•Êú¨Ë™û resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 #ifdef _WIN32
@@ -86,7 +86,7 @@ BEGIN
             VALUE "FileDescription", "PTCtrl.exe"
             VALUE "FileVersion", "0, 1, 1, 0"
             VALUE "InternalName", "PTCtrl"
-            VALUE "LegalCopyright", "ÇËÇÂÇ§ÇøÇÒ Copyright (C) 2008-2009"
+            VALUE "LegalCopyright", "„Çä„Çá„ÅÜ„Å°„Çì Copyright (C) 2008-2009"
             VALUE "OriginalFilename", "PTCtrl.exe"
             VALUE "ProductName", "PTCtrl"
             VALUE "ProductVersion", "0, 1, 1, 0"
@@ -98,7 +98,7 @@ BEGIN
     END
 END
 
-#endif    // ì˙ñ{åÍ resources
+#endif    // Êó•Êú¨Ë™û resources
 /////////////////////////////////////////////////////////////////////////////
 
 
