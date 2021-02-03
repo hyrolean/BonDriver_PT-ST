@@ -1,4 +1,4 @@
-// PT1Ctrl.cpp : ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒGƒ“ƒgƒŠ ƒ|ƒCƒ“ƒg‚ğ’è‹`‚µ‚Ü‚·B
+// PT1Ctrl.cpp : ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¨ãƒ³ãƒˆãƒª ãƒã‚¤ãƒ³ãƒˆã‚’å®šç¾©ã—ã¾ã™ã€‚
 //
 
 #include "stdafx.h"
@@ -35,7 +35,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	}
 
 	if (IsInstallService(SERVICE_NAME) == FALSE) {
-		//•’Ê‚Éexe‚Æ‚µ‚Ä‹N“®‚ğs‚¤
+		//æ™®é€šã«exeã¨ã—ã¦èµ·å‹•ã‚’è¡Œã†
 		HANDLE h = ::OpenMutexW(SYNCHRONIZE, FALSE, PT1_GLOBAL_LOCK_MUTEX);
 		if (h != NULL) {
 			BOOL bErr = FALSE;
@@ -53,7 +53,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		if (g_hStartEnableEvent == NULL) {
 			return -2;
 		}
-		// •ÊƒvƒƒZƒX‚ªI—¹ˆ—’†‚Ìê‡‚ÍI—¹‚ğ‘Ò‚Â(Å‘å1•b)
+		// åˆ¥ãƒ—ãƒ­ã‚»ã‚¹ãŒçµ‚äº†å‡¦ç†ä¸­ã®å ´åˆã¯çµ‚äº†ã‚’å¾…ã¤(æœ€å¤§1ç§’)
 		if (::WaitForSingleObject(g_hStartEnableEvent, 1000) == WAIT_TIMEOUT) {
 			::CloseHandle(g_hStartEnableEvent);
 			return -3;
@@ -65,13 +65,13 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 			return -4;
 		}
 		if (::WaitForSingleObject(g_hMutex, 100) == WAIT_TIMEOUT) {
-			// •ÊƒvƒƒZƒX‚ªÀs’†‚¾‚Á‚½
+			// åˆ¥ãƒ—ãƒ­ã‚»ã‚¹ãŒå®Ÿè¡Œä¸­ã ã£ãŸ
 			::CloseHandle(g_hMutex);
 			::CloseHandle(g_hStartEnableEvent);
 			return -5;
 		}
 
-		//‹N“®
+		//èµ·å‹•
 		StartMain(FALSE);
 
 		::ReleaseMutex(g_hMutex);
@@ -81,12 +81,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		::CloseHandle(g_hStartEnableEvent);
 	}
 	else {
-		//ƒT[ƒrƒX‚Æ‚µ‚ÄƒCƒ“ƒXƒg[ƒ‹Ï‚İ
+		//ã‚µãƒ¼ãƒ“ã‚¹ã¨ã—ã¦ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«æ¸ˆã¿
 		if (IsStopService(SERVICE_NAME) == FALSE) {
 			g_hMutex = _CreateMutex(TRUE, PT1_CTRL_MUTEX);
 			int err = GetLastError();
 			if (g_hMutex != NULL && err != ERROR_ALREADY_EXISTS) {
-				//‹N“®
+				//èµ·å‹•
 				SERVICE_TABLE_ENTRY dispatchTable[] = {
 					{ SERVICE_NAME, (LPSERVICE_MAIN_FUNCTION)service_main },
 					{ NULL, NULL }
@@ -97,7 +97,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 			}
 		}
 		else {
-			//Stopó‘Ô‚È‚Ì‚Å‹N“®‚·‚é
+			//StopçŠ¶æ…‹ãªã®ã§èµ·å‹•ã™ã‚‹
 			StartServiceCtrl(SERVICE_NAME);
 		}
 	}
