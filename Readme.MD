@@ -37,7 +37,7 @@
   トランスポンダの再編などによりチャンネル情報が変更された場合にチャンネルファイルのTSIDを実質一々書き換える必要がなくなりアプリケーション側のチャンネルスキャンだけで事が足りるようになります。
   - [mod BSAlmighty+DeltaHz fixes](https://github.com/hyrolean/BonDriver_PT-ST_mod/releases/tag/mod) 
     (Described by 2020/01/07 LVhJPic0JSk5LiQ1ITskKVk9UGBg)
-  #### ※機能を有効にするには、添付のBonDriver_PT-S.ChSet.txtを差し替えてください。また、添付のBonDriver_PT-S.ChSet.txtを差し替えた結果、EDCBでのチャンネルのスキャン時に抜けが発生する場合は、以下のようにEDCBのディレクトリ上に存在する設定ファイルBonCtrl.iniのEpgCapTimeOutの値を10以上に上げて再スキャンしてみてください。
+  #### ※機能を有効にするには、添付のBonDriver_PT-S.ChSet.txtを差し替えてください。また、添付のBonDriver_PT-S.ChSet.txtを差し替えた結果、EDCBでのチャンネルのスキャン時に抜けが発生する場合は、下記のようにEDCBのディレクトリ上に存在する設定ファイルBonCtrl.iniのEpgCapTimeOutの値を10以上に上げて再スキャンしてみてください。
   ```
   ;EPG取得時の動作設定
   [EPGCAP]
