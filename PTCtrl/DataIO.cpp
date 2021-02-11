@@ -304,7 +304,7 @@ void CDataIO::Run()
 	if( enStatus != PT::STATUS_OK ){
 		return ;
 	}
-	if( bEnalbe == true ){
+	if( bEnalbe ){
 		enStatus = m_pcDevice->SetTransferEnable(false);
 		if( enStatus != PT::STATUS_OK ){
 			return ;
@@ -374,7 +374,7 @@ void CDataIO::ResetDMA()
 	if( enStatus != PT::STATUS_OK ){
 		return ;
 	}
-	if( bEnalbe == true ){
+	if( bEnalbe ){
 		enStatus = m_pcDevice->SetTransferEnable(false);
 		if( enStatus != PT::STATUS_OK ){
 			return ;
@@ -436,7 +436,7 @@ void CDataIO::Stop()
 	if( enStatus != PT::STATUS_OK ){
 		return ;
 	}
-	if( bEnalbe == true ){
+	if( bEnalbe ){
 		enStatus = m_pcDevice->SetTransferEnable(false);
 		if( enStatus != PT::STATUS_OK ){
 			return ;
@@ -454,7 +454,7 @@ void CDataIO::EnableTuner(int iID, BOOL bEnable)
 	wstring strEvent = L"";
 	Format(strPipe, L"%s%d", CMD_PT1_DATA_PIPE, iID );
 	Format(strEvent, L"%s%d", CMD_PT1_DATA_EVENT_WAIT_CONNECT, iID );
-	if( bEnable == TRUE ){
+	if( bEnable ){
 		if( enISDB == PT::Device::ISDB_T ){
 			if( iTuner == 0 ){
 #ifndef USE_DEQUE
@@ -616,7 +616,7 @@ UINT WINAPI CDataIO::RecvThread(LPVOID pParam)
 		}
 
 		bool b;
-		
+
 		b = pSys->WaitBlock();
 		if (b == false) break;
 
@@ -765,7 +765,7 @@ void CDataIO::MicroPacket(BYTE* pbPacket)
 	switch(packetId){
 		case 2:
 			bCreate1TS = m_cT0Micro.MicroPacket(pbPacket);
-			if( bCreate1TS == TRUE && m_T0SetBuff != NULL){
+			if( bCreate1TS && m_T0SetBuff != NULL){
 				Lock1();
 #ifndef USE_DEQUE
 				if( m_T0SetBuff == NULL ){
@@ -807,7 +807,7 @@ void CDataIO::MicroPacket(BYTE* pbPacket)
 			break;
 		case 4:
 			bCreate1TS = m_cT1Micro.MicroPacket(pbPacket);
-			if( bCreate1TS == TRUE && m_T1SetBuff != NULL){
+			if( bCreate1TS && m_T1SetBuff != NULL){
 				Lock2();
 #ifndef USE_DEQUE
 				if( m_T1SetBuff == NULL ){
@@ -849,7 +849,7 @@ void CDataIO::MicroPacket(BYTE* pbPacket)
 			break;
 		case 1:
 			bCreate1TS = m_cS0Micro.MicroPacket(pbPacket);
-			if( bCreate1TS == TRUE && m_S0SetBuff != NULL){
+			if( bCreate1TS && m_S0SetBuff != NULL){
 				Lock3();
 #ifndef USE_DEQUE
 				if( m_S0SetBuff == NULL ){
@@ -891,7 +891,7 @@ void CDataIO::MicroPacket(BYTE* pbPacket)
 			break;
 		case 3:
 			bCreate1TS = m_cS1Micro.MicroPacket(pbPacket);
-			if( bCreate1TS == TRUE && m_S1SetBuff != NULL){
+			if( bCreate1TS && m_S1SetBuff != NULL){
 				Lock4();
 #ifndef USE_DEQUE
 				if( m_S1SetBuff == NULL ){

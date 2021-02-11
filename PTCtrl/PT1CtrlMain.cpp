@@ -23,7 +23,7 @@ void CPT1CtrlMain::StartMain(BOOL bService)
 		OutputDebugString(L"PT SDK‚Ìƒ[ƒh‚ÉŽ¸”s");
 		bInit = FALSE;
 	}
-	if( bInit == TRUE ){
+	if( bInit ){
 		m_cPT1.Init();
 	}
 	m_bService = bService;
@@ -136,7 +136,7 @@ void CPT1CtrlMain::CmdSetCh(CMD_STREAM* pCmdParam, CMD_STREAM* pResParam)
 	DWORD dwTSID;
 	BOOL hasStream = FALSE;
 	CopyDefData3((DWORD*)&iID, &dwCh, &dwTSID, pCmdParam->bData);
-	if( m_cPT1.SetCh(iID,dwCh,dwTSID,hasStream) == TRUE ){
+	if( m_cPT1.SetCh(iID,dwCh,dwTSID,hasStream) ){
 		pResParam->dwParam = CMD_SUCCESS;
 	}else{
 		pResParam->dwParam = CMD_ERR;
