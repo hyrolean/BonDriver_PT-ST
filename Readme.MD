@@ -1,5 +1,7 @@
 # BonDriver_PT-ST MOD
 
+**※このリポジトリは、クローズ予定です。（[こちらのリポジトリ](https://github.com/hyrolean/BonDriver_PTx-ST_mod)に統合されました。）**
+
 ## オリジナルのBonDriver_PT(人柱版３)との使用する上での相違点
 
 - チャンネルファイル.ChSet.txtファイルに -/+ を値欄に記述することにより、直近に登録したチャンネルの値を参照できるようになりました。
